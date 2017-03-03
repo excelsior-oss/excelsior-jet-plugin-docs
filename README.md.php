@@ -55,10 +55,10 @@
         function github($uri) {echo "https://github.com/excelsior-oss/excelsior-jet-maven-plugin/$uri";}
         function project_file() {echo '`pom.xml`';}
         function project_dir() {echo '${project.basedir}';}
-        function name($n) {echo "`<$n>`";}
-        function name_pattern($n, $v) {echo "`<$n>`*`$v`*`</$n>`";}
-        function name_value($n, $v) {echo "`<$n>$v</$n>`";}
-        function name_string($n, $v) {name_value($n, $v);}
+        function param($n) {echo "`<$n>`";}
+        function param_pattern($n, $v) {echo "`<$n>`*`$v`*`</$n>`";}
+        function param_value($n, $v) {echo "`<$n>$v</$n>`";}
+        function param_string($n, $v) {param_value($n, $v);}
         function section($s) {echo "`<$s>`";}
     } else if ($argv[1] == 'gradle') {
         define('GRADLE', TRUE);
@@ -67,10 +67,10 @@
         function github($uri) {echo "https://github.com/excelsior-oss/excelsior-jet-gradle-plugin/$uri";}
         function project_file() {echo '`build.gradle`';}
         function project_dir() {echo '<project.projectDir>';}
-        function name($n) {echo "`$n`";}
-        function name_pattern($n, $v) {echo "`$n = `*`$v`*";}
-        function name_value($n, $v) {echo "`$n = $v`";}
-        function name_string($n, $v) {echo "`$n = '$v'`";}
+        function param($n) {echo "`$n`";}
+        function param_pattern($n, $v) {echo "`$n = `*`$v`*";}
+        function param_value($n, $v) {echo "`$n = $v`";}
+        function param_string($n, $v) {echo "`$n = '$v'`";}
         function section($s) {echo "`$s{}`";}
     } else {
         print 'ERROR: Expected "maven" or "gradle" as command-line argument';
@@ -194,7 +194,7 @@ of your <?php project_file(); ?> file:
 </plugin>
 ```
 
-set the <?php name('mainClass'); ?> parameter<sup>\*</sup>, and use the following command line to build the application:
+set the <?php param('mainClass'); ?> parameter<sup>\*</sup>, and use the following command line to build the application:
 
 ```
 mvn jet:build
@@ -237,8 +237,8 @@ gradlew jetBuild
           exit(1);
       endif; ?>
 
-<sup>\*</sup> For a Tomcat Web application, the <?php name('mainClass'); ?> parameter is not needed.
-Instead, you would need to add the <?php name('tomcatHome'); ?> parameter pointing
+<sup>\*</sup> For a Tomcat Web application, the <?php param('mainClass'); ?> parameter is not needed.
+Instead, you would need to add the <?php param('tomcatHome'); ?> parameter pointing
 to a *clean* Tomcat installation, a copy of which will be used
 for the deployment of your Web application at build time.
 See [Building Tomcat Web Applications](#building-tomcat-web-applications) section below for more details.
@@ -252,7 +252,7 @@ of the [Excelsior JET WinService API](https://github.com/excelsior-oss/excelsior
 In order to do its job, the plugin needs to locate an Excelsior JET installation.
 You have three ways to specify the Excelsior JET installation directory explicitly:
 
-  - add the <?php name('jetHome'); ?> parameter to the <?php
+  - add the <?php param('jetHome'); ?> parameter to the <?php
     maven_gradle('`<configuration>` section of the plugin',
                  '`excelsiorJet{}` plugin extension'); ?> 
   - pass the `jet.home` system property on the <?php tool(); ?> command line as follows:
@@ -282,7 +282,7 @@ and copies all its run time dependencies to `jet/build/lib`.
 Then it invokes the Excelsior JET AOT compiler to compile all those jars into a native executable.
 Upon success, it copies that executable and the required Excelsior JET Runtime files
 into the `jet/app` directory, binds the executable to that copy of the Runtime,
-and copies the contents of the <?php name('packageFilesDir'); ?> directory recursively
+and copies the contents of the <?php param('packageFilesDir'); ?> directory recursively
 to `jet/app`, if applicable (see "Customizing Package Content" below.)
 
 > Your natively compiled application is ready for distribution at this point: you may copy
@@ -292,9 +292,9 @@ to `jet/app`, if applicable (see "Customizing Package Content" below.)
 Finally, the plugin packs the contents of the `jet/app` directory into
 a zip archive named `<?php maven_gradle('${project.build.finalName}', '<artifactName>'); ?>.zip`
 so as to aid single file re-distribution.
-On Windows and Linux, you can also set the <?php name_string('packaging', 'excelsior-installer'); ?> 
+On Windows and Linux, you can also set the <?php param_string('packaging', 'excelsior-installer'); ?> 
 configuration parameter to have the plugin create an Excelsior Installer setup instead,
-and on OS X, setting <?php name_string('packaging', 'osx-app-bundle'); ?> will result in the creation
+and on OS X, setting <?php param_string('packaging', 'osx-app-bundle'); ?> will result in the creation
 of an application bundle and, optionally, a native OS X installer package (`.pkg` file).
 
 ### Performing a Test Run
@@ -357,7 +357,7 @@ You may also pass the arguments via the `jet.runArgs` system property as a comma
 (Use "`\`" to escape commas within arguments: `-Djet.runArgs="arg1,Hello\, World"` will be passed
 to your application as `arg1 "Hello, World"`.)
 
-### Configurations other than <?php name('mainClass'); ?> 
+### Configurations other than <?php param('mainClass'); ?> 
 
 For the complete list of parameters, refer to
 <?php if (MAVEN) : ?>
@@ -370,7 +370,7 @@ the Javadoc of field declarations of the
 [ExcelsiorJetExtension](https://github.com/excelsior-oss/excelsior-jet-gradle-plugin/blob/master/src/main/groovy/com/excelsiorjet/gradle/plugin/ExcelsiorJetExtension.groovy) class.
 <?php endif; ?>
 Most of them have default values derived from your <?php project_file(); ?> project,
-such as the <?php name('outputName'); ?> parameter specifying the name of the resulting executable.
+such as the <?php param('outputName'); ?> parameter specifying the name of the resulting executable.
 
 #### Application appearance
 If the startup of your client application takes longer than you would have liked,
@@ -384,7 +384,7 @@ If the splash image has been specified in the manifest of the application JAR fi
 the respective image will be obtained automatically,
 otherwise, you may assign a splash screen image to the application manually:
 
-<?php name_pattern('splash', 'splash-image-file'); ?> 
+<?php param_pattern('splash', 'splash-image-file'); ?> 
 
 It is recommended to store the splash image in a VCS, and if you place it at
 `<?php project_dir(); ?>/src/main/jetresources/splash.png`, you won't need to specify it
@@ -393,9 +393,9 @@ for other Excelsior JET-specific resource files (such as the EULA for Excelsior 
 
 There are also two useful Windows-specific configuration parameters:
 
-<?php name_value('hideConsole', 'true'); ?> – hide console
+<?php param_value('hideConsole', 'true'); ?> – hide console
 
-<?php name_pattern('icon', 'icon-file'); ?> – set executable icon (in Windows .ico format)
+<?php param_pattern('icon', 'icon-file'); ?> – set executable icon (in Windows .ico format)
 
 Just as it works for the splash image, if you place the icon file at
 `<?php project_dir(); ?>/src/main/jetresources/icon.ico`, you won't need to specify it
@@ -445,23 +445,23 @@ dependencies {
 ```
 <?php endif; ?>
 
-where <?php name('groupId'); ?>, <?php name('artifactId'); ?>, and <?php name('version'); ?> identify the dependency in the same way as in
+where <?php param('groupId'); ?>, <?php param('artifactId'); ?>, and <?php param('version'); ?> identify the dependency in the same way as in
 the respective global <?php section('dependencies'); ?> section of the <?php tool(); ?> project,
-and <?php name('protect'); ?>, <?php name('optimize'); ?>, and <?php name('pack'); ?> are Excelsior JET-specific properties for the dependency,
+and <?php param('protect'); ?>, <?php param('optimize'); ?>, and <?php param('pack'); ?> are Excelsior JET-specific properties for the dependency,
 described below.
 
-You may omit <?php name('groupId'); ?> and/or <?php name('version'); ?> from the configuration, if you are sure that there is
-exactly one dependency with the given <?php name('artifactId'); ?> in the project. The plugin will issue an
+You may omit <?php param('groupId'); ?> and/or <?php param('version'); ?> from the configuration, if you are sure that there is
+exactly one dependency with the given <?php param('artifactId'); ?> in the project. The plugin will issue an
 ambiguous dependency resolution error if that is not the case.
 
-You may also specify just the <?php name('groupId'); ?> parameter to set the same properties for all dependencies
+You may also specify just the <?php param('groupId'); ?> parameter to set the same properties for all dependencies
 sharing the same `groupId` at once.
 
 Finally, if you need some additional dependencies that are not listed in the project explicitly
 to appear in the application classpath (for example, you need to access some resources in a directory
-via `ResourceBundle.getResource()`), add, for each of them, a <?php name('dependency'); ?> configuration
-with the <?php name('path'); ?> parameter pointing to the respective directory or jar/zip file,
-*instead of* <?php name('groupId'); ?>, <?php name('artifactId'); ?>, and/or <?php name('version'); ?>:
+via `ResourceBundle.getResource()`), add, for each of them, a <?php param('dependency'); ?> configuration
+with the <?php param('path'); ?> parameter pointing to the respective directory or jar/zip file,
+*instead of* <?php param('groupId'); ?>, <?php param('artifactId'); ?>, and/or <?php param('version'); ?>:
 
 <?php if (MAVEN) : ?>
 ```xml
@@ -487,17 +487,17 @@ dependencies {
 ```
 <?php endif; ?>
 
-You may also use the <?php name('path'); ?> parameter to identify project dependencies that are described with 
+You may also use the <?php param('path'); ?> parameter to identify project dependencies that are described with 
 <?php if (MAVEN) : ?>
-the <?php name('systemPath'); ?> parameter.
+the <?php param('systemPath'); ?> parameter.
 <?php elseif (GRADLE) : ?>
-<?php name('files'); ?> or <?php name('fileTree'); ?> parameters.
+<?php param('files'); ?> or <?php param('fileTree'); ?> parameters.
 <?php endif; ?>
 
 ##### Code Protection
 
 If you need to protect your classes from decompilers,
-make sure that the respective dependencies have the <?php name('protect'); ?> property set to `all`.
+make sure that the respective dependencies have the <?php param('protect'); ?> property set to `all`.
 If you do not need to protect classes for a certain dependency (e.g. a third-party library),
 set it to the `not-required` value instead. The latter setting may reduce the build time and the size of
 the resulting executable in some cases.
@@ -506,7 +506,7 @@ the resulting executable in some cases.
 ##### Selective Optimization
 
 To optimize all classes and all methods of each class of a dependency for performance,
-set its <?php name('optimize'); ?> property to `all`. The other valid value of that property is `auto-detect`.
+set its <?php param('optimize'); ?> property to `all`. The other valid value of that property is `auto-detect`.
 It means that the Optimizer detects which classes from the dependency are used by the application
 and compiles the dependency selectively, leaving the unused classes in bytecode or non-optimized form.
 That helps reduce the compilation time and download size of the application.
@@ -526,14 +526,14 @@ If you do not configure the above settings for any dependencies, all classes fro
 all dependencies will be compiled to native code.
 That is a so called `typical` optimization preset.
 
-However, as mentioned above, you may wish to set the <?php name('optimize'); ?> property to `auto-detect`
-and the <?php name('protect'); ?> property to `not-required` for third-party dependencies, and
+However, as mentioned above, you may wish to set the <?php param('optimize'); ?> property to `auto-detect`
+and the <?php param('protect'); ?> property to `not-required` for third-party dependencies, and
 set both properties to `all` for the dependencies containing your own classes,
 so as to reduce the compilation time and executable size.
 You may also let the plugin do that automatically by choosing the `smart` optimization
 preset in the plugin configuration:
 
-<?php name_string('optimizationPreset', 'smart'); ?> 
+<?php param_string('optimizationPreset', 'smart'); ?> 
 
 When the `smart` preset is enabled, the plugin distinguishes between application classes
 and third-party library classes using the following heuristic: it treats all dependencies
@@ -566,12 +566,12 @@ dependencies {
 ```
 <?php endif; ?>
 
-Instead of setting the <?php name('protect'); ?> and <?php name('optimize'); ?> properties,
+Instead of setting the <?php param('protect'); ?> and <?php param('optimize'); ?> properties,
 you may provide a semantic hint to the future maintainers
 of the <?php maven_gradle('POM file', 'Gradle build script'); ?> that a particular dependency is a third party library
-by setting its <?php name('isLibrary'); ?> property to `true`. The plugin will then set <?php name('protect'); ?> 
-to `not-required` and <?php name('optimize'); ?> to `auto-detect` when the `smart` optimization preset is enabled.
-Conversely, if you set <?php name('isLibrary'); ?> to `false`, both those properties will be set to `all`.
+by setting its <?php param('isLibrary'); ?> property to `true`. The plugin will then set <?php param('protect'); ?> 
+to `not-required` and <?php param('optimize'); ?> to `auto-detect` when the `smart` optimization preset is enabled.
+Conversely, if you set <?php param('isLibrary'); ?> to `false`, both those properties will be set to `all`.
 The following configuration is therefore equivalent to the above example:
 
 <?php if (MAVEN) : ?>
@@ -605,26 +605,26 @@ the classes that were not compiled also get packed into the executable and will 
 handled by the JIT compiler at run time on an attempt to load them. As a result, the
 original jar files are no longer needed for the running application to work.
 
-The above describes the behavior for dependencies that have the <?php name('pack'); ?> property
+The above describes the behavior for dependencies that have the <?php param('pack'); ?> property
 omitted or set to the default value of `auto-detect`. However, certain dependencies
 may require presence of the original class files at application run time.
 For instance, some third-party security providers, e.g. Bouncy Castle, check the sizes of
 their class files during execution. In such a dependency, class files serve as both program code
 *and* resources: even if all classes get pre-compiled,
 you still have to make them available to the running application.
-Setting the <?php name('pack'); ?> property of that dependency to `all` resolves the problem.
+Setting the <?php param('pack'); ?> property of that dependency to `all` resolves the problem.
 
 You may also opt to not pack a particular dependency into the executable at all by
-setting its <?php name('pack'); ?> property to `none`. The dependency will then be copied
+setting its <?php param('pack'); ?> property to `none`. The dependency will then be copied
 to the final package as-is.
-To control its location in the package, use the <?php name('packagePath'); ?> parameter of
-the <?php name('dependency'); ?> configuration. By default, non-packed jar files are copied to
+To control its location in the package, use the <?php param('packagePath'); ?> parameter of
+the <?php param('dependency'); ?> configuration. By default, non-packed jar files are copied to
 the `lib` subfolder of the package, while directories
-(referenced by the <?php name('path'); ?> parameter) are copied to the root of the package.
+(referenced by the <?php param('path'); ?> parameter) are copied to the root of the package.
 
 Finally, if you are sure that a certain dependency does not contain any resources
 *and* all its classes get compiled, you can disable copying of such a (non-packed)
-dependency to the package by setting its <?php name('disableCopyToPackage'); ?> parameter to `true`.
+dependency to the package by setting its <?php param('disableCopyToPackage'); ?> parameter to `true`.
 
 Example of an additional dependency configuration:
 
@@ -653,8 +653,8 @@ the plugin to place it under the `my-extra-files` directory of the package
 (thus `extra-resources` directory will appear in the `my-extra-files` directory
 of the final package).
 
-Note that the only valid value of the <?php name('pack'); ?> property for directories is `none`,
-so there is no need to set it in the respective <?php name('dependency'); ?> configuration.
+Note that the only valid value of the <?php param('pack'); ?> property for directories is `none`,
+so there is no need to set it in the respective <?php param('dependency'); ?> configuration.
 
 
 ##### Ignoring project dependencies
@@ -665,17 +665,17 @@ If you build your main artifact as a so called fat jar (using
 for example), you most likely do not need Excelsior JET
 to compile any of its dependencies, because the main artifact will contain all
 classes and resources of the application.
-In this case, you may set the <?php name('ignoreProjectDependencies'); ?> plugin parameter to `true`
+In this case, you may set the <?php param('ignoreProjectDependencies'); ?> plugin parameter to `true`
 to disable compilation of project dependencies.
 Then you will only need to set the `protect/optimize/pack` properties for your main artifact
 and for the entries of the <?php section('dependencies'); ?> section of the plugin that are identified
-with the <?php name('path'); ?> parameter, if any.
+with the <?php param('path'); ?> parameter, if any.
 
 
 ##### Tomcat web application dependencies
 
 You may configure Tomcat web application dependencies as described above, except that
-<?php name('path'); ?>, <?php name('packagePath'); ?>, and <?php name('disableCopyToPackage'); ?> parameters are not available for them.
+<?php param('path'); ?>, <?php param('packagePath'); ?>, and <?php param('disableCopyToPackage'); ?> parameters are not available for them.
 
 
 #### Customizing Package Content
@@ -684,7 +684,7 @@ By default, the final package contains just the resulting executable and the nec
 However, you may want the plugin to add other files to it: README, license, media, help files,
 third-party native libraries, and so on. For that, add the following configuration parameter:
 
-<?php name_pattern('packageFilesDir', 'extra-package-files-directory'); ?> 
+<?php param_pattern('packageFilesDir', 'extra-package-files-directory'); ?> 
 
 referencing a directory with all such extra files that you need added to the package.
 The contents of the directory will be copied recursively to the final package.
@@ -697,7 +697,7 @@ of other <?php tool(); ?> plugins <?php maven_gradle('such as `maven-resources-p
 **New in 0.9.5:**
 
 If you only need to add a few extra files or folders to the package,
-you may find it more convenient to specify them directly rather than prepare a <?php name('packageFilesDir'); ?> directory.
+you may find it more convenient to specify them directly rather than prepare a <?php param('packageFilesDir'); ?> directory.
 You can do that using the <?php section('packageFiles'); ?> configuration section:
 
 <?php if (MAVEN) : ?>
@@ -731,12 +731,12 @@ packageFiles {
 ```
 <?php endif; ?>
 
-where <?php name('path'); ?> is the pathname of the file or folder on the host system,
+where <?php param('path'); ?> is the pathname of the file or folder on the host system,
 <?php if (MAVEN) : ?>
-<?php name('type'); ?> is either `file` or `folder` (omit this parameter if you do not want
-Excelsior JET to check that <?php name('path'); ?> indeed points to a file or folder during packaging),
+<?php param('type'); ?> is either `file` or `folder` (omit this parameter if you do not want
+Excelsior JET to check that <?php param('path'); ?> indeed points to a file or folder during packaging),
 <?php endif; ?>
-and <?php name('packagePath'); ?> is its desired location within the package (root folder if that parameter is omitted).
+and <?php param('packagePath'); ?> is its desired location within the package (root folder if that parameter is omitted).
 
 #### Excelsior Installer Configurations
 
@@ -747,22 +747,22 @@ for Linux.
 To create an Excelsior Installer setup, add the following configuration
 into <?php maven_gradle('the plugin `<configuration>` section', 'the `excelsiorJet{}` plugin extension'); ?>:
 
-<?php name_string('packaging', 'excelsior-installer'); ?> 
+<?php param_string('packaging', 'excelsior-installer'); ?> 
 
 **Note:** if you use the same <?php project_file(); ?> for all three supported platforms (Windows, OS X, and Linux),
 it is recommended to use another configuration:
 
-<?php name_string('packaging', 'native-bundle'); ?> 
+<?php param_string('packaging', 'native-bundle'); ?> 
 
 to create Excelsior Installer setups on Windows and Linux and an application bundle and installer on OS X.
 
 Excelsior Installer setup, in turn, has the following configurations:
 
-* <?php name_pattern('product', 'product-name'); ?> - default is <?php maven_gradle('`${project.name}`', '`<project.name>`'); ?> 
+* <?php param_pattern('product', 'product-name'); ?> - default is <?php maven_gradle('`${project.name}`', '`<project.name>`'); ?> 
 
-* <?php name_pattern('vendor', 'vendor-name'); ?> -  default is <?php maven_gradle('`${project.organization.name}`', '`<project.group>`'); ?> 
+* <?php param_pattern('vendor', 'vendor-name'); ?> -  default is <?php maven_gradle('`${project.organization.name}`', '`<project.group>`'); ?> 
 
-* <?php name_pattern('version', 'product-version'); ?> - default is <?php maven_gradle('`${project.version}`', '`<project.version>`'); ?> 
+* <?php param_pattern('version', 'product-version'); ?> - default is <?php maven_gradle('`${project.version}`', '`<project.version>`'); ?> 
 
 The above parameters are also used by Windows Version Information and OS X bundle configurations.
 
@@ -782,21 +782,21 @@ excelsiorInstaller {
 
 that has the following configuration parameters:
 
-* <?php name_pattern('eula', 'end-user-license-agreement-file'); ?> - default is `<?php project_dir(); ?>/src/main/jetresources/eula.txt`
+* <?php param_pattern('eula', 'end-user-license-agreement-file'); ?> - default is `<?php project_dir(); ?>/src/main/jetresources/eula.txt`
 
-* <?php name_pattern('eulaEncoding', 'eula-file-encoding'); ?> - default is `autodetect`. Supported encodings are `US-ASCII` (plain text) and `UTF16-LE`
+* <?php param_pattern('eulaEncoding', 'eula-file-encoding'); ?> - default is `autodetect`. Supported encodings are `US-ASCII` (plain text) and `UTF16-LE`
 
-* <?php name_pattern('installerSplash', 'installer-splash-screen-image'); ?> - default is `<?php project_dir(); ?>/src/main/jetresources/installerSplash.bmp`
+* <?php param_pattern('installerSplash', 'installer-splash-screen-image'); ?> - default is `<?php project_dir(); ?>/src/main/jetresources/installerSplash.bmp`
 
 **New in 0.9.5:**
 
 The following parameters are only available for Excelsior JET 11.3 and above:
 
-* <?php name_pattern('language', 'setup-language'); ?> - force the installer to display its messages in a particular language.
+* <?php param_pattern('language', 'setup-language'); ?> - force the installer to display its messages in a particular language.
     Available languages: `autodetect` (default), `english`, `french`, `german`,
     `japanese`, `russian`, `polish`, `spanish`, `italian`, and `brazilian`.
 
-* <?php name_value('cleanupAfterUninstall', 'true'); ?> -  remove all files from the installation folder on uninstall
+* <?php param_value('cleanupAfterUninstall', 'true'); ?> -  remove all files from the installation folder on uninstall
 
 *  After-install runnable configuration sections of the form:
 
@@ -819,10 +819,10 @@ The following parameters are only available for Excelsior JET 11.3 and above:
     ```
 <?php endif; ?>
 
-    where <?php name('target'); ?> is the location of the after-install runnable within the package,
-    and <?php name('arguments'); ?> contains its command-line arguments.
+    where <?php param('target'); ?> is the location of the after-install runnable within the package,
+    and <?php param('arguments'); ?> contains its command-line arguments.
 
-* <?php name_pattern('compressionLevel', 'setup-compression-level'); ?> - available values: `fast`, `medium`, `high`
+* <?php param_pattern('compressionLevel', 'setup-compression-level'); ?> - available values: `fast`, `medium`, `high`
 
 * Installation directory configuration section:
 
@@ -846,13 +846,13 @@ The following parameters are only available for Excelsior JET 11.3 and above:
 
     where:
     
-    * <?php name('type'); ?> is either `program-files` (default on Windows, Windows only),
+    * <?php param('type'); ?> is either `program-files` (default on Windows, Windows only),
       `system-drive` (Windows only, default for Tomcat web applications on Windows),
       `absolute-path`,  `current-directory` (default on Linux), or `user-home` (Linux only)
-    * <?php name('path'); ?> - the default pathname of the installation directory
-    * <?php name('fixed'); ?> - if set to `true`, prohibits changes of the `path` value at install time
+    * <?php param('path'); ?> - the default pathname of the installation directory
+    * <?php param('fixed'); ?> - if set to `true`, prohibits changes of the `path` value at install time
 
-* <?php name_pattern('registryKey', 'registry-key'); ?> - Windows registry key for installation.
+* <?php param_pattern('registryKey', 'registry-key'); ?> - Windows registry key for installation.
 
 * List of Windows shortcuts to create during installation, e.g. in the Start Menu:
 
@@ -896,26 +896,26 @@ The following parameters are only available for Excelsior JET 11.3 and above:
 
     where:
     
-    * <?php name('location'); ?> - either `program-folder`, `desktop`, `start-menu`, or `startup`
+    * <?php param('location'); ?> - either `program-folder`, `desktop`, `start-menu`, or `startup`
 
-    * <?php name('target'); ?> - location of the shortcut target within the package
+    * <?php param('target'); ?> - location of the shortcut target within the package
 
-    * <?php name('name'); ?> - shortcut name. If not set, the filename of the target will be used, without extension
+    * <?php param('name'); ?> - shortcut name. If not set, the filename of the target will be used, without extension
 
-    * <?php name('icon'); ?> - location of the shortcut icon. If no icon is set for the shortcut, the default icon will be used.
+    * <?php param('icon'); ?> - location of the shortcut icon. If no icon is set for the shortcut, the default icon will be used.
 
-        If the package already contains the desired icon file, configure the <?php name('packagePath'); ?> parameter
-        to point to its location within the package. Otherwise, set the <?php name('path'); ?> parameter
+        If the package already contains the desired icon file, configure the <?php param('packagePath'); ?> parameter
+        to point to its location within the package. Otherwise, set the <?php param('path'); ?> parameter
         to the pathname of an icon file on the host system,
-        and, optionally, <?php name('packagePath'); ?> to the location of the *folder* within the package
+        and, optionally, <?php param('packagePath'); ?> to the location of the *folder* within the package
         in which that icon file should be placed (root folder by default).
 
-    * <?php name('workingDirectory'); ?> - pathname of the working directory of the shortcut target within the package.
+    * <?php param('workingDirectory'); ?> - pathname of the working directory of the shortcut target within the package.
                              If not set, the directory containing the target will be used.
 
-    * <?php name('arguments'); ?> - command-line arguments that shall be passed to the target
+    * <?php param('arguments'); ?> - command-line arguments that shall be passed to the target
 
-* <?php name_value('noDefaultPostInstallActions', 'true'); ?> -
+* <?php param_value('noDefaultPostInstallActions', 'true'); ?> -
      if you do not want to add the default post-install actions, e.g.
      prompting the user to run your main executable after installation.
 
@@ -953,14 +953,14 @@ The following parameters are only available for Excelsior JET 11.3 and above:
 
     where:
     
-    * <?php name('type'); ?> - `run` (default), `open`, or `restart`
-    * <?php name('target'); ?> - location of the target within the package (not valid for `restart`)
-    * <?php name('workingDirectory'); ?> - pathname of the working directory of the target within the package.
+    * <?php param('type'); ?> - `run` (default), `open`, or `restart`
+    * <?php param('target'); ?> - location of the target within the package (not valid for `restart`)
+    * <?php param('workingDirectory'); ?> - pathname of the working directory of the target within the package.
                              If not set, the directory containing the target will be used.
                              Valid for the `run` type only.
-    * <?php name('arguments'); ?> - command-line arguments that shall be passed to the target.
+    * <?php param('arguments'); ?> - command-line arguments that shall be passed to the target.
                       Valid for the `run` type only.
-    * <?php name('checked'); ?> - whether the checkbox should be checked by default (`true` or `false`)
+    * <?php param('checked'); ?> - whether the checkbox should be checked by default (`true` or `false`)
 
 * List of Windows file associations in the form:
 
@@ -1006,30 +1006,30 @@ The following parameters are only available for Excelsior JET 11.3 and above:
 
     where:
     
-    * <?php name('extension'); ?> - file name extension *without the leading dot*
+    * <?php param('extension'); ?> - file name extension *without the leading dot*
 
-    * <?php name('target'); ?> - location within the package of the executable program being associated with <?php name('extension'); ?> 
+    * <?php param('target'); ?> - location within the package of the executable program being associated with <?php param('extension'); ?> 
 
-    * <?php name('description'); ?> - description of the file type. For example, the description of .mp3 files is "MP3 Format Sound".
+    * <?php param('description'); ?> - description of the file type. For example, the description of .mp3 files is "MP3 Format Sound".
 
-    * <?php name('targetDescription'); ?> -  string to be used in the prompt displayed by the Excelsior Installer wizard:
-                               "Associate *.extension files with <?php name('targetDescription'); ?>".
+    * <?php param('targetDescription'); ?> -  string to be used in the prompt displayed by the Excelsior Installer wizard:
+                               "Associate *.extension files with <?php param('targetDescription'); ?>".
 
-    * <?php name('icon'); ?> - the location of the association icon.  If not set, the default icon will be used
+    * <?php param('icon'); ?> - the location of the association icon.  If not set, the default icon will be used
                (e.g. the icon associated with the executable target).
 
-        If the package already contains the desired icon file, configure the <?php name('packagePath'); ?> parameter
-        to point to its location within the package. Otherwise, set the <?php name('path'); ?> parameter
+        If the package already contains the desired icon file, configure the <?php param('packagePath'); ?> parameter
+        to point to its location within the package. Otherwise, set the <?php param('path'); ?> parameter
         to the pathname of an icon file on the host system,
-        and, optionally, <?php name('packagePath'); ?> to the location of the *folder* within the package
+        and, optionally, <?php param('packagePath'); ?> to the location of the *folder* within the package
         in which that icon file should be placed (root folder by default).
 
-    * <?php name('arguments'); ?> - command-line arguments that shall be passed to the target
+    * <?php param('arguments'); ?> - command-line arguments that shall be passed to the target
 
-    * <?php name('checked'); ?> - initial state of the respective checkbox "Associate *.extension files with <?php name('targetDescription'); ?>"
+    * <?php param('checked'); ?> - initial state of the respective checkbox "Associate *.extension files with <?php param('targetDescription'); ?>"
                     in the Excelsior Installer wizard. Default value is `true`.
 
-* <?php name_pattern('installCallback', 'dynamic-library'); ?> - install callback dynamic library.
+* <?php param_pattern('installCallback', 'dynamic-library'); ?> - install callback dynamic library.
   Default is `<?php project_dir(); ?>/src/main/jetresources/install.dll|libinstall.so`
 
 * Uninstall callback dynamic library:
@@ -1050,21 +1050,21 @@ The following parameters are only available for Excelsior JET 11.3 and above:
     ```
 <?php endif; ?>
 
-    If <?php name('packageFilesDir'); ?> or <?php name('packageFiles'); ?> add a library to the package, you need to configure
-    <?php name('packagePath'); ?> parameter of <?php name('uninstallCallback'); ?> locating the library in the package, else set <?php name('path'); ?> parameter
-    locating the library on the host system and <?php name('packagePath'); ?> specifying a folder within the package where
-    the library should be placed (root folder by default). Default value for <?php name('path'); ?> is
+    If <?php param('packageFilesDir'); ?> or <?php param('packageFiles'); ?> add a library to the package, you need to configure
+    <?php param('packagePath'); ?> parameter of <?php param('uninstallCallback'); ?> locating the library in the package, else set <?php param('path'); ?> parameter
+    locating the library on the host system and <?php param('packagePath'); ?> specifying a folder within the package where
+    the library should be placed (root folder by default). Default value for <?php param('path'); ?> is
     `<?php project_dir(); ?>/src/main/jetresources/uninstall.dll|libuninstall.so`
 
-* <?php name_pattern('welcomeImage', 'welcome-image'); ?> - (Windows) image to display on the first screen of
+* <?php param_pattern('welcomeImage', 'welcome-image'); ?> - (Windows) image to display on the first screen of
   the installation wizard. Recommended size: 177*314px.
   Default is `<?php project_dir(); ?>/src/main/jetresources/welcomeImage.bmp`.
 
-* <?php name_pattern('installerImage', 'installer-image'); ?> - (Windows) image to display in the upper-right corner
+* <?php param_pattern('installerImage', 'installer-image'); ?> - (Windows) image to display in the upper-right corner
   on subsequent Excelsior Installer screens. Recommended size: 109*59px.
   Default is `<?php project_dir(); ?>/src/main/jetresources/installerImage.bmp`.
 
-* <?php name_pattern('uninstallerImage', 'uninstaller-image'); ?> - (Windows) Image to display on the first screen
+* <?php param_pattern('uninstallerImage', 'uninstaller-image'); ?> - (Windows) Image to display on the first screen
   of the uninstall wizard. Recommended size: 177*314px.
   Default is `<?php project_dir(); ?>/src/main/jetresources/uninstallerImage.bmp`.
 
@@ -1076,11 +1076,11 @@ The plugin supports the creation of OS X application bundles and installers.
 To create an OS X application bundle, add the following configuration
 into <?php maven_gradle('the plugin `<configuration>` section', 'the `excelsiorJet{}` plugin extension'); ?>:
 
-<?php name_string('packaging', 'osx-app-bundle'); ?> 
+<?php param_string('packaging', 'osx-app-bundle'); ?> 
 
 **Note:** if you use the same <?php project_file(); ?> for all three supported platforms (Windows, OS X, and Linux), it is recommended to use another configuration:
 
-<?php name_string('packaging', 'native-bundle'); ?> 
+<?php param_string('packaging', 'native-bundle'); ?> 
 
 to create Excelsior Installer setups on Windows and Linux and an application bundle and installer on OS X.
 
@@ -1103,7 +1103,7 @@ The complete list of the parameters can be obtained
 [here](https://github.com/excelsior-oss/excelsior-jet-api/blob/master/src/main/java/com/excelsiorjet/api/tasks/config/OSXAppBundleConfig.java).
 
 You still need to tell the plugin where the OS X icon (`.icns` file) for your bundle is located.
-Do that using the <?php name('icon'); ?> parameter of the <?php section('osxBundle'); ?> section, or simply place the icon file at
+Do that using the <?php param('icon'); ?> parameter of the <?php section('osxBundle'); ?> section, or simply place the icon file at
 `<?php project_dir(); ?>/src/main/jetresources/icon.icns` to let the plugin pick it up automatically.
 
 By default, the plugin will create an OS X application bundle only,
@@ -1111,8 +1111,8 @@ but to distribute your application to your customers you probably need to sign i
 OS X installer (`.pkg` file).
 The plugin enables you to do that using the following parameters within the <?php section('osxBundle'); ?> section:
 
-* <?php name_pattern('developerId', 'developer-identity-certificate'); ?> - "Developer ID Application" or "Mac App Distribution" certificate name for signing resulting OSX app bundle with `codesign` tool.
-* <?php name_pattern('publisherId', 'publisher-identity-certificate'); ?> - "Developer ID Installer" or "Mac Installer Distribution"
+* <?php param_pattern('developerId', 'developer-identity-certificate'); ?> - "Developer ID Application" or "Mac App Distribution" certificate name for signing resulting OSX app bundle with `codesign` tool.
+* <?php param_pattern('publisherId', 'publisher-identity-certificate'); ?> - "Developer ID Installer" or "Mac Installer Distribution"
 certificate name for signing the resulting OS X Installer Package (`.pkg` file) with the `productbuild` tool.
 
 If you do not want to expose above parameters via <?php project_file(); ?>, you may pass them as system properties
@@ -1130,15 +1130,15 @@ On Windows, the plugin automatically adds a
 to the resulting executable. This can be disabled by specifying the following
 configuration:
 
-<?php name_value('addWindowsVersionInfo', 'false'); ?> 
+<?php param_value('addWindowsVersionInfo', 'false'); ?> 
 
 By default, the values of version-information resource strings are derived from project settings.
-The values of <?php name('product'); ?> and <?php name('vendor'); ?> configurations are used verbatim as
+The values of <?php param('product'); ?> and <?php param('vendor'); ?> configurations are used verbatim as
 `ProductName` and `CompanyName` respectively;
 other defaults can be changed using the <?php section('windowsVersionInfo'); ?> configuration section
 that has the following parameters:
 
-  * <?php name_pattern('version', 'version-string'); ?> 
+  * <?php param_pattern('version', 'version-string'); ?> 
   
     Version number (both `FileVersion` and `ProductVersion` strings are set to this same value)
 
@@ -1148,11 +1148,11 @@ that has the following parameters:
     if the latter does not meet this requirement,
     or from `<?php maven_gradle('${project.version}', 'project.version'); ?>` if this configuration is not present.
 
-  * <?php name_pattern('copyright', 'legal-copyright'); ?> 
+  * <?php param_pattern('copyright', 'legal-copyright'); ?> 
   
     `LegalCopyright` string, with default value derived from other parameters
 
-  * <?php name_pattern('description', 'executable-description'); ?> 
+  * <?php param_pattern('description', 'executable-description'); ?> 
   
     `FileDescription` string, default is `<?php maven_gradle('${project.name}', 'project.name'); ?>`
 
@@ -1169,18 +1169,18 @@ In the `none` mode, `Throwable.printStackTrace()` methods print a few fake eleme
 It may result in a performance improvement, if the application throws and catches exceptions repeatedly.
 Note, however, that certain third-party APIs rely on stack trace printing. One example is the Log4J API that provides logging services.
 
-To set the stack trace support mode, use the <?php name('stackTraceSupport'); ?> configuration parameter:
+To set the stack trace support mode, use the <?php param('stackTraceSupport'); ?> configuration parameter:
 
-<?php name_pattern('stackTraceSupport', 'stack-trace-mode'); ?> 
+<?php param_pattern('stackTraceSupport', 'stack-trace-mode'); ?> 
 
 #### Method Inlining
 When optimizing a Java program, the compiler often replaces method call statements with bodies of the methods
 that would be called at run time. This optimization, known as method inlining, improves application performance,
 especially when tiny methods, such as get/set accessors, are inlined.
 However, inlining of larger methods increases code size, and its impact on performance may be uncertain.
-To control the aggressiveness of method inlining, use the <?php name('inlineExpansion'); ?> plugin parameter:
+To control the aggressiveness of method inlining, use the <?php param('inlineExpansion'); ?> plugin parameter:
 
-<?php name_pattern('inlineExpansion', 'inline-expasnion-mode'); ?> 
+<?php param_pattern('inlineExpansion', 'inline-expasnion-mode'); ?> 
 
 The available modes are:
   `aggressive` (default), `very-aggressive`, `medium`, `low`, and `tiny-methods-only`
@@ -1204,7 +1204,7 @@ and the arguments of the application:
 
 To enable the multi-app mode add the following configuration parameter:
 
-<?php name_value('multiApp', 'true'); ?> 
+<?php param_value('multiApp', 'true'); ?> 
 
 <a name="jvmargs"></a>
 #### Defining System Properties and JVM Arguments
@@ -1287,12 +1287,12 @@ The JET Runtime will then use the information to reduce the application startup 
 The Startup Accelerator is enabled by default, but you may disable it by specifying the following
 configuration:
 
-<?php name_value('profileStartup', 'false'); ?> 
+<?php param_value('profileStartup', 'false'); ?> 
 
 You may also specify the duration of the profiling session in seconds by specifying the following
 configuration:
 
-<?php name_pattern('profileStartupTimeout', 'duration-in-seconds'); ?> 
+<?php param_pattern('profileStartupTimeout', 'duration-in-seconds'); ?> 
 
 As soon as the specified period elapses, profiling stops and the application is automatically terminated,
 so ensure that the timeout value is large enough to capture all actions the application normally carries out
@@ -1325,7 +1325,7 @@ installation package size.
 
 To enable the Global Optimizer, add the following configuration parameter:
 
-<?php name_value('globalOptimizer', 'true'); ?> 
+<?php param_value('globalOptimizer', 'true'); ?> 
 
 **Note:** performing a Test Run is mandatory if the Global Optimizer is enabled.
 
@@ -1352,7 +1352,7 @@ that may contain parameters described below.
 Excelsior JET VM comes with multiple implementations of the runtime system,
 optimized for different hardware configurations and application types.
 
-To select a particular runtime flavor, use the <?php name('flavor'); ?> parameter of the <?php section('runtime'); ?> section.
+To select a particular runtime flavor, use the <?php param('flavor'); ?> parameter of the <?php section('runtime'); ?> section.
 The flavors available in the Enterprise Edition and the Evaluation Package are
 `desktop`, `server`, and `classic`; other Excelsior JET products may not feature some of these.
 
@@ -1363,7 +1363,7 @@ Considerations"*, section *"Runtime Selection"*.
 
 By default, Excelsior JET places its runtime files required for the
 generated executable to work in a folder named `"rt"` located next to that executable.
-You may change that default location with the <?php name('location'); ?> parameter of the <?php section('runtime'); ?> section.
+You may change that default location with the <?php param('location'); ?> parameter of the <?php section('runtime'); ?> section.
 
 **Note:** This functionality is only available in Excelsior JET 11.3 and above.
 
@@ -1372,10 +1372,10 @@ You may change that default location with the <?php name('location'); ?> paramet
 Java SE 8 defines three subsets of the standard Platform API called compact profiles.
 Excelsior JET enables you to deploy your application with one of those subsets.
 
-To specify a particular profile, use the <?php name('profile'); ?> parameter of the <?php section('runtime'); ?> section.
+To specify a particular profile, use the <?php param('profile'); ?> parameter of the <?php section('runtime'); ?> section.
 The valid values are `auto` (default), `compact1`, `compact2`, `compact3`, and `full`.
 
-<?php name_string('profile', 'auto'); ?> forces Excelsior JET to detect which parts of the Java SE Platform API are referenced
+<?php param_string('profile', 'auto'); ?> forces Excelsior JET to detect which parts of the Java SE Platform API are referenced
 by the application and select the smallest compact profile that includes them all,
 or the entire Platform API (`full`) if there is no such profile.
 
@@ -1396,7 +1396,7 @@ where you distribute your application can be added to the package with the follo
 </runtime>
 ```
 
-You may specify `all` as the value of <?php name('locale'); ?> to add all locales and charsets at once or
+You may specify `all` as the value of <?php param('locale'); ?> to add all locales and charsets at once or
 `none` to not include any of them.
 <?php elseif (GRADLE) : ?>
 ```gradle
@@ -1431,7 +1431,7 @@ To include optional JET Runtime components in the package, use the following con
 </runtime>
 ```
 
-You may specify `all` as the value of <?php name('component'); ?> to add all components at once or
+You may specify `all` as the value of <?php param('component'); ?> to add all components at once or
 `none` to not include any of them.
 <?php elseif (GRADLE) : ?>
 ```gradle
@@ -1461,7 +1461,7 @@ classes.
 
 To enable disk footprint reduction, add the following parameter to the <?php section('runtime'); ?> section:
 
-<?php name_pattern('diskFootprintReduction', 'disk-footprint-reduction-mode'); ?> 
+<?php param_pattern('diskFootprintReduction', 'disk-footprint-reduction-mode'); ?> 
 
 The available modes are:
 
@@ -1521,18 +1521,18 @@ and detaches the respective JET Runtime components from the installation package
 Alternatively, you may enforce detaching of particular components using the following parameter
 under the <?php section('slimDown'); ?> configuration section:
 
-<?php name_pattern('detachComponents', 'comma-separated list of APIs'); ?> 
+<?php param_pattern('detachComponents', 'comma-separated list of APIs'); ?> 
 
 Available detachable components: `corba, management, xml, jndi, jdbc, awt/java2d, swing, jsound, rmi, jax-ws`
 
 At the end of the build process, the plugin places the detached package
 in the `jet` subdirectory of the <?php tool(); ?> target build directory.
-You may configure its name with the <?php name('detachedPackage'); ?> parameter
+You may configure its name with the <?php param('detachedPackage'); ?> parameter
 of the <?php section('slimDown'); ?> section
 (by default the name is `<?php maven_gradle('${project.build.finalName}.pkl', 'artifactName.pkl'); ?>`).
 
 Do not forget to upload the detached package to the location specified
-in <?php name('detachedBaseURL'); ?> above before deploying your application to end-users.
+in <?php param('detachedBaseURL'); ?> above before deploying your application to end-users.
 
 **Note:** Enabling Java Runtime Slim-Down automatically enables the Global Optimizer,
           so performing a Test Run is mandatory for Java Runtime Slim-Down as well.
@@ -1568,11 +1568,11 @@ trialVersion {
 and specify the number of calendar days after the build date when you want the application
 to expire, and the error message that the expired binary should display to the user on a launch attempt.
 
-You can also set a particular, fixed expiration date by using the <?php name('expireDate'); ?> parameter
-instead of <?php name('expireInDays'); ?>. The format of the <?php name('expireDate'); ?> parameter value
+You can also set a particular, fixed expiration date by using the <?php param('expireDate'); ?> parameter
+instead of <?php param('expireInDays'); ?>. The format of the <?php param('expireDate'); ?> parameter value
 is *ddMMMyyyy*, for example `15Sep2020`.
 
-**Note:** If you choose the <?php name('packaging'); ?> type `excelsior-installer`, the generated setup
+**Note:** If you choose the <?php param('packaging'); ?> type `excelsior-installer`, the generated setup
 package will also expire, displaying the same message to the user.
 
 One common usage scenario of this functionality is setting the hard expiration date further into the future,
@@ -1586,7 +1586,7 @@ an outdated trial copy for evaluation.
 If you do not wish constant data, such as reflection info, Java string literals, or packed resource files,
 to be visible in the resulting executable, enable data protection by specifying the following configuration:
 
-<?php name_value('protectData', 'true'); ?> 
+<?php param_value('protectData', 'true'); ?> 
 
 For more details on data protection, refer to the *"Data Protection"* section of
 the *"Intellectual Property Protection"* chapter of the Excelsior JET User's Guide.
@@ -1596,7 +1596,7 @@ The commonly used compiler options and equations are mapped to the parameters of
 However the compiler also has some advanced options and equations that you may find in the
 Excelsior JET User's Guide, plus some troubleshooting settings that the Excelsior JET Support
 team may suggest you to use.
-You may enumerate such options using the <?php name('compilerOptions'); ?> configuration, for instance:
+You may enumerate such options using the <?php param('compilerOptions'); ?> configuration, for instance:
 
 <?php if (MAVEN) : ?>
 ```xml
@@ -1640,7 +1640,7 @@ and 7.0.x up to version 7.0.62. Excelsior JET 11.3 adds support for Tomcat 8.0 a
 #### Usage
 
 <?php if (MAVEN) : ?>
-The plugin will treat your <?php tool(); ?> project as a Tomcat Web application project if its <?php name('packaging'); ?> type is `war`.
+The plugin will treat your <?php tool(); ?> project as a Tomcat Web application project if its <?php param('packaging'); ?> type is `war`.
 To enable native compliation of your Tomcat Web application, you need to copy and paste the following configuration into the <?php section('plugins'); ?> section of your <?php project_file(); ?> file:
 
 ```xml
@@ -1684,7 +1684,7 @@ excelsiorJet {
 
 <?php endif; ?>
 
-and then set the <?php name('tomcatHome'); ?> parameter, which has to point to the *master* Tomcat installation &mdash; basically,
+and then set the <?php param('tomcatHome'); ?> parameter, which has to point to the *master* Tomcat installation &mdash; basically,
 a clean Tomcat instance that was never launched.
 
 You may also set the above parameter by passing the `tomcat.home` system property on the <?php tool(); ?> command line as follows:
@@ -1731,11 +1731,11 @@ Most configuration parameters that are available for plain Java SE applications 
 are also available for Tomcat web applications. There are also a few Tomcat-specific configuration parameters that
 you may set within the <?php section('tomcat'); ?> section:
 
-* <?php name('warDeployName'); ?> - the name of the war file to be deployed into Tomcat.
+* <?php param('warDeployName'); ?> - the name of the war file to be deployed into Tomcat.
    By default, Tomcat uses the name of the war file as the context path of the respective web application.
-   If you need your web application to be on the "/" context path, set <?php name('warDeployName'); ?> to `ROOT` value.
+   If you need your web application to be on the "/" context path, set <?php param('warDeployName'); ?> to `ROOT` value.
 
-* <?php name('hideConfig'); ?> - if you do not want your end users to inspect or modify the Tomcat configuration files
+* <?php param('hideConfig'); ?> - if you do not want your end users to inspect or modify the Tomcat configuration files
   located in `<tomcatHome>/conf/`, set this plugin parameter to `true`
   to have those files placed inside the executable, so they will not appear in the `conf/` subdirectory
   of end user installations of your Web application.
@@ -1760,13 +1760,13 @@ you may set within the <?php section('tomcat'); ?> section:
   from applications and place them in the `conf/` directory on startup,
   thus negating the effect of hiding.
 
-* <?php name('genScripts'); ?> - you may continue to use the standard Tomcat scripts such as `bin/startup`
+* <?php param('genScripts'); ?> - you may continue to use the standard Tomcat scripts such as `bin/startup`
   and `bin/shutdown` with the natively compiled Tomcat, as by default
   the respective scripts are created in `jet/app/bin` along with the executable.
   However, if you are going to launch the created executable directly, you may set
-  the <?php name('genScripts'); ?> parameter to `false`.
+  the <?php param('genScripts'); ?> parameter to `false`.
 
-* <?php name('installWindowsService'); ?> - if you opt for `excelsior-installer` packaging for Tomcat on Windows,
+* <?php param('installWindowsService'); ?> - if you opt for `excelsior-installer` packaging for Tomcat on Windows,
   the installer will register the Tomcat executable as a Windows service by default.
   You may set this parameter to `false` to disable that behavior.
   Otherwise, you may configure Windows Service-specific parameters for the Tomcat service by adding
@@ -1776,7 +1776,7 @@ you may set within the <?php section('tomcat'); ?> section:
 
 **New in 0.9.5:**
 
-* <?php name('allowUserToChangeTomcatPort'); ?> -  if you opt for `excelsior-installer` packaging for Tomcat on Windows,
+* <?php param('allowUserToChangeTomcatPort'); ?> -  if you opt for `excelsior-installer` packaging for Tomcat on Windows,
   you may have the Excelsior Installer wizard prompt the user to specify the Tomcat HTTP port during installation
   setting this parameter to `true`.
 
@@ -1868,7 +1868,7 @@ See `samples/Invocation` in your Excelsior JET installation directory for detail
 #### Test Run for Dynamic Libraries
 
 To test an invocation dynamic library, you may set
-a "test" <?php name('mainClass'); ?> in the plugin configuration. The `main` method of that class
+a "test" <?php param('mainClass'); ?> in the plugin configuration. The `main` method of that class
 should in turn call methods that are subject for usage from a non-JVM language.
 
 ### Windows Services
@@ -1995,43 +1995,43 @@ excelsiorJet {
 
 Where:
 
-* <?php name('mainClass'); ?> - a class extending the `com.excelsior.service.WinService` class
+* <?php param('mainClass'); ?> - a class extending the `com.excelsior.service.WinService` class
   of the Excelsior JET WinService API.
 
-* <?php name('name'); ?> -  the system name of the service. It is used to install, remove and otherwise manage the service.
+* <?php param('name'); ?> -  the system name of the service. It is used to install, remove and otherwise manage the service.
   It can also be used to recognize messages from this service in the system event log.
   This name is set during the creation of the service executable.
-  By default, the value of the <?php name('outputName'); ?> parameter is used as the system name of the service.
+  By default, the value of the <?php param('outputName'); ?> parameter is used as the system name of the service.
 
-* <?php name('displayName'); ?> - the descriptive name of the service.
+* <?php param('displayName'); ?> - the descriptive name of the service.
   It is shown in the Event Viewer system tool and in the Services applet of the Windows Control Panel.
-  By default, the value of the <?php name('name'); ?> parameter
+  By default, the value of the <?php param('name'); ?> parameter
   of the <?php section('windowsService'); ?> section is used as the display name.
 
-* <?php name('description'); ?> - the user description of the service. It must not exceed 1000 characters.
+* <?php param('description'); ?> - the user description of the service. It must not exceed 1000 characters.
 
-* <?php name('arguments'); ?> - command-line arguments that shall be passed to the service upon startup.
+* <?php param('arguments'); ?> - command-line arguments that shall be passed to the service upon startup.
 
-* <?php name('logOnType'); ?> - specifies an account to be used by the service.
+* <?php param('logOnType'); ?> - specifies an account to be used by the service.
   Valid values are: `local-system-account` (default), `user-account`.
   - `local-system-account` - run the service under the built-in system account.
   - `user-account` - run the service under a user account.
      When installing the package, the user will be prompted for an account name
      and password necessary to run the service.
 
-* <?php name('allowDesktopInteraction'); ?> - specifies if the service needs to interact with the system desktop,
+* <?php param('allowDesktopInteraction'); ?> - specifies if the service needs to interact with the system desktop,
   e.g. open/close other windows, etc. This option is only available if the service is installed
   under the local system account.
 
-* <?php name('startupType'); ?> -  specifies how to start the service. Valid values are `automatic` (default), `manual`, `disabled`.
+* <?php param('startupType'); ?> -  specifies how to start the service. Valid values are `automatic` (default), `manual`, `disabled`.
   - `automatic` - specifies that the service should start automatically when the system starts.
   - `manual` - specifies that a user or a dependent service can start the service.
      Services with Manual startup type do not start automatically when the system starts.
   - `disabled` - prevents the service from being started by the system, a user, or any dependent service.
 
-* <?php name('startServiceAfterInstall'); ?> -  specifies if the service should be started immediately after installation.
+* <?php param('startServiceAfterInstall'); ?> -  specifies if the service should be started immediately after installation.
 
-*  <?php name('dependencies'); ?> - list of other service names on which the service depends.
+*  <?php param('dependencies'); ?> - list of other service names on which the service depends.
 
 Based on the above parameters, the plugin will create the `install.bat`/`uninstall.bat` scripts
 in the `target/jet/app` directory to enable you to install and uninstall the service manually to test it.
@@ -2043,8 +2043,8 @@ using Excelsior JET 11.0, as the respective functionality is missing in the `xpa
 It only works for Excelsior JET 11.3 and above.
 
 **Note:** You may build a multi-app executable runnable as both plain application and Windows service.
-For that, set the <?php name('appType'); ?> parameter to `windows-service` and <?php name('multiApp'); ?> to `true`.
-Please note that in this case <?php name('arguments'); ?> will have the syntax of multi-app executables,
+For that, set the <?php param('appType'); ?> parameter to `windows-service` and <?php param('multiApp'); ?> to `true`.
+Please note that in this case <?php param('arguments'); ?> will have the syntax of multi-app executables,
 so to pass arguments to your service and not to the Excelsior JET JVM, 
 add `"-args"` (without the quotes) as the first argument.
 
@@ -2107,22 +2107,22 @@ Otherwise, think of this version as of 1.0 Release Candidate 1.
 
 Compared with the previous releases, the following functionality was added to the plugin:
 
-* <?php name('packageFiles'); ?> parameter introduced to add separate files/folders to the package
+* <?php param('packageFiles'); ?> parameter introduced to add separate files/folders to the package
 * <?php section('excelsiorInstaller'); ?> configuration section extended with the following parameters:
-    - <?php name('language'); ?> - to set installation wizard language
-    - <?php name('cleanupAfterUninstall'); ?> - to remove all files on uninstall
-    - <?php name('afterInstallRunnable'); ?> - to run an executable after installation
-    - <?php name('compressionLevel'); ?> - to control installation package compression
-    - <?php name('installationDirectory'); ?> - to change installation directory defaults
-    - <?php name('registryKey'); ?> - to customize the registry key used for installation on Windows
-    - <?php name('shortcuts'); ?> - to add shortcuts to the Windows Start menu, desktop, etc.
-    - <?php name('noDefaultPostInstallActions'); ?> - to not add the default post-install actions
-    - <?php name('postInstallCheckboxes'); ?> - to configure post-install actions
-    - <?php name('fileAssociations'); ?> - to create file associations
-    - <?php name('installCallback'); ?> - to set install callback dynamic library
-    - <?php name('uninstallCallback'); ?> - to set uninstall callback dynamic library
-    - <?php name('welcomeImage'); ?>, <?php name('installerImage'); ?>, <?php name('uninstallerImage'); ?> - to customize (un)installer appearance
-* <?php name('allowUserToChangeTomcatPort'); ?> parameter added to the <?php section('tomcat'); ?> configuration section
+    - <?php param('language'); ?> - to set installation wizard language
+    - <?php param('cleanupAfterUninstall'); ?> - to remove all files on uninstall
+    - <?php param('afterInstallRunnable'); ?> - to run an executable after installation
+    - <?php param('compressionLevel'); ?> - to control installation package compression
+    - <?php param('installationDirectory'); ?> - to change installation directory defaults
+    - <?php param('registryKey'); ?> - to customize the registry key used for installation on Windows
+    - <?php param('shortcuts'); ?> - to add shortcuts to the Windows Start menu, desktop, etc.
+    - <?php param('noDefaultPostInstallActions'); ?> - to not add the default post-install actions
+    - <?php param('postInstallCheckboxes'); ?> - to configure post-install actions
+    - <?php param('fileAssociations'); ?> - to create file associations
+    - <?php param('installCallback'); ?> - to set install callback dynamic library
+    - <?php param('uninstallCallback'); ?> - to set uninstall callback dynamic library
+    - <?php param('welcomeImage'); ?>, <?php param('installerImage'); ?>, <?php param('uninstallerImage'); ?> - to customize (un)installer appearance
+* <?php param('allowUserToChangeTomcatPort'); ?> parameter added to the <?php section('tomcat'); ?> configuration section
   to allow the user to change the Tomcat port at install time
 
 Version 0.9.4 (24-Jan-2017)
@@ -2132,12 +2132,12 @@ Version 0.9.4 (24-Jan-2017)
 Version 0.9.3 (19-Jan-2017)
 
 * <?php section('runtime'); ?> configuration section introduced and related parameters moved to it:
-   <?php name('locales'); ?>, <?php name('profile'); ?>, <?php name('optRtFiles'); ?> (renamed to <?php name('components'); ?>), <?php name('javaRuntimeSlimDown'); ?> (renamed to <?php name('slimDown'); ?>).
+   <?php param('locales'); ?>, <?php param('profile'); ?>, <?php param('optRtFiles'); ?> (renamed to <?php param('components'); ?>), <?php param('javaRuntimeSlimDown'); ?> (renamed to <?php param('slimDown'); ?>).
    Old configuration parameters are now deprecated and will be removed in a future release.
    New parameters added to the <?php section('runtime'); ?> section:
-    - <?php name('flavor'); ?> to select a runtime flavor
-    - <?php name('location'); ?> to change runtime location in the resulting package
-    - <?php name('diskFootprintReduction'); ?> to reduce application disk footprint
+    - <?php param('flavor'); ?> to select a runtime flavor
+    - <?php param('location'); ?> to change runtime location in the resulting package
+    - <?php param('diskFootprintReduction'); ?> to reduce application disk footprint
 
 * Windows version-info resource configuration changed to meet other enclosed configurations style.
   Old way to configure Windows version info is deprecated and will be removed in a future release.
@@ -2176,11 +2176,11 @@ Version 0.7.1 (10-Aug-2016)
 This release covers most of the compiler options that are available in the JET Control Panel UI,
 and all options of the `xpack` utility as of Excelsior JET 11.0 release:
 
-  * <?php name('splash'); ?> parameter introduced to control the appearance of your application on startup
-  * <?php name('inlineExpansion'); ?> parameter introduced to control aggressiveness of methods inlining
-  * <?php name('stackTraceSupport'); ?> parameter introduced to set stack trace support level
-  * <?php name('compilerOptions'); ?> parameter introduced to set advanced compiler options and equations
-  * <?php name('locales'); ?> parameter introduced to add additional locales and charsets to the resulting package
+  * <?php param('splash'); ?> parameter introduced to control the appearance of your application on startup
+  * <?php param('inlineExpansion'); ?> parameter introduced to control aggressiveness of methods inlining
+  * <?php param('stackTraceSupport'); ?> parameter introduced to set stack trace support level
+  * <?php param('compilerOptions'); ?> parameter introduced to set advanced compiler options and equations
+  * <?php param('locales'); ?> parameter introduced to add additional locales and charsets to the resulting package
 
 <?php if (MAVEN) : ?>
 Version 0.7.0 (22-June-2016)
@@ -2188,7 +2188,7 @@ Version 0.7.0 (22-June-2016)
 * Massive refactoring that introduces `excelsior-jet-api` module: a common part between Maven and Gradle
   Excelsior JET plugins
 
-* <?php name('jetResourcesDir'); ?> parameter introduced to set a directory containing Excelsior JET specific resource files
+* <?php param('jetResourcesDir'); ?> parameter introduced to set a directory containing Excelsior JET specific resource files
    such as application icons, installer splash, etc.
 
 Version 0.6.0 (30-May-2016)
@@ -2205,11 +2205,11 @@ Version 0.5.0 (04-Apr-2016)
 
 Version 0.4.4 (11-Mar-2016)
 
-* <?php name('protectData'); ?> parameter added to enable data protection
+* <?php param('protectData'); ?> parameter added to enable data protection
 
 Version 0.4.3 (17-Feb-2016)
 
-* <?php name('jvmArgs'); ?> parameter introduced to define system properties and JVM arguments
+* <?php param('jvmArgs'); ?> parameter introduced to define system properties and JVM arguments
 
 Version 0.4.2 (11-Feb-2016)
 
@@ -2217,7 +2217,7 @@ Version 0.4.2 (11-Feb-2016)
 
 Version 0.4.1 (05-Feb-2016)
 
-* <?php name('packageFilesDir'); ?> parameter introduced to add extra files to the final package
+* <?php param('packageFilesDir'); ?> parameter introduced to add extra files to the final package
 
 Version 0.4.0 (03-Feb-2016)
 
@@ -2230,11 +2230,11 @@ Version 0.3.2 (01-Feb-2016)
 
 * "[Changes are not reflected in compiled app if building without clean #11](<?php github('issues/11'); ?>)" issue fixed
 * Error message corrected for "[Cannot find jar if classifier is used #10](<?php github('issues/10'); ?>)",
-  explicitly referring the <?php name('mainJar'); ?> plugin parameter that should be set in such cases.
+  explicitly referring the <?php param('mainJar'); ?> plugin parameter that should be set in such cases.
 
 Version 0.3.1 (26-Jan-2016)
 
-* <?php name('optRtFiles'); ?> parameter introduced to add optional JET runtime components
+* <?php param('optRtFiles'); ?> parameter introduced to add optional JET runtime components
 
 Version 0.3.0 (22-Jan-2016)
 
