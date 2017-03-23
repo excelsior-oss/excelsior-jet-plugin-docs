@@ -11,3 +11,8 @@ for %%s in (src\wiki\*.md.php) do (
     php -d error_log=error.log -f src\wiki\wiki.php maven %%s | sed -r -e "s/(\s+)$//" > ..\excelsior-jet-maven-plugin.wiki\%%~ns ^
         || (echo Error building Maven %%s page && exit /b 1)
 )
+
+for %%s in (src\wiki\*.md.php) do (
+    php -d error_log=error.log -f src\wiki\wiki.php gradle %%s | sed -r -e "s/(\s+)$//" > ..\excelsior-jet-gradle-plugin.wiki\%%~ns ^
+        || (echo Error building Gradle %%s page && exit /b 1)
+)
