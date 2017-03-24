@@ -56,6 +56,7 @@
         function github($uri) {echo "https://github.com/excelsior-oss/excelsior-jet-maven-plugin/$uri";}
         function project_file() {echo '`pom.xml`';}
         function project_dir() {echo '${project.basedir}';}
+        function target_dir($dir) {echo "`target/$dir`";}
         function param($n) {echo "`<$n>`";}
         function param_pattern($n, $v) {echo "`<$n>`*`$v`*`</$n>`";}
         function param_value($n, $v) {echo "`<$n>$v</$n>`";}
@@ -68,6 +69,7 @@
         function github($uri) {echo "https://github.com/excelsior-oss/excelsior-jet-gradle-plugin/$uri";}
         function project_file() {echo '`build.gradle`';}
         function project_dir() {echo '<project.projectDir>';}
+        function target_dir($dir) {echo "`build/$dir`";}
         function param($n) {echo "`$n`";}
         function param_pattern($n, $v) {echo "`$n = `*`$v`*";}
         function param_value($n, $v) {echo "`$n = $v`";}
@@ -345,7 +347,7 @@ Use the following command line to build the project:
 At the end of a successful build, the plugin will place your natively compiled 
 Java application/library and the required pieces of Excelsior JET Runtime:
 
-  * in the `jet/app` subdirectory of your project
+  * in the <?php target_dir('jet/app'); ?> subdirectory of your project
   * in a zip archive named `<?php maven_gradle('${project.build.finalName}', '<artifactName>'); ?>.zip`.
        
 Refer to [plugin documentation](<?php github('wiki'); ?>) for further instructions.
