@@ -45,7 +45,7 @@ It is recommended to perform a Test Run at least once before building your appli
   So it is recommended to perform a Test Run on the 32-bit version of Excelsior JET at least once.
 
 The profiles will be used by the Startup Optimizer and the 
-[Global Optimizer](<?php github(); ?>/wiki/Optimization-Settings#global-optimizer).
+[Global Optimizer](Optimization-Settings#global-optimizer).
 
 Your application may require command-line arguments to run. If that is the case,
 set the `runArgs` plugin parameter as follows:
