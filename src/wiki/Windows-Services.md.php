@@ -12,6 +12,13 @@ using which it can be installed to/removed from the system. A service can be ins
 (to be launched at system bootstrap) or manual (to be activated later by a user
 through the start button in the Windows Control Panel/Services).
 
+## Contents
+
+  * [Adding Dependency on the Excelsior JET WinService API](#adding-dependency-on-the-excelsior-jet-winservice-api)
+  * [Windows Service Configuration](#windows-service-configuration)
+  * [Test Run](#test-run)
+
+
 ## Adding Dependency on the Excelsior JET WinService API
 
 A Windows service program must register a callback routine (so called control handler)
@@ -47,6 +54,7 @@ dependencies {
 }
 ```
 <?php endif; ?>
+
 
 ## Windows Service Configuration
 
@@ -159,7 +167,7 @@ Where:
 *  <?php param('dependencies'); ?> - list of other service names on which the service depends.
 
 Based on the above parameters, the plugin will create the `install.bat`/`uninstall.bat` scripts
-in the `target/jet/app` directory to enable you to install and uninstall the service manually to test it.
+in the <?php target_dir('jet/app'); ?> directory to enable you to install and uninstall the service manually to test it.
 If you opt for the `excelsior-installer` packaging type, the service will be registered automatically
 during package installation.
 
@@ -173,7 +181,8 @@ Please note that in this case <?php param('arguments'); ?> will have the syntax 
 so to pass arguments to your service and not to the Excelsior JET JVM, 
 add `"-args"` (without the quotes) as the first argument.
 
-## Test Run of Windows Services
+
+## Test Run
 
 Unfortunately, a service cannot be registered in the system before its compilation,
 so a fully functional Test Run is not available for Windows Services. However, it is recommended

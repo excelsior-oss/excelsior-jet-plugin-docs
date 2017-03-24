@@ -1,3 +1,12 @@
+## Contents
+
+  * [Plain Java SE Applications](#plain-java-se-applications)
+  * [Other Application Types](#other-application-types)
+  * [Configurations Other Than <?php param('mainClass'); ?>](#configurations-other-than-mainclass)
+
+
+## Plain Java SE Applications
+
 <?php if (MAVEN) : ?>
 If your project is a plain Java SE application, you need to copy and paste
 the following configuration into the <?php section('plugins'); ?> section

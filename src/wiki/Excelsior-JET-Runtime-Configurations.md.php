@@ -14,6 +14,17 @@ runtime {
 
 that may contain parameters described below.
 
+## Contents
+
+  * [Runtime Flavor Selection](#runtime-flavor-selection)
+  * [Changing Default Runtime Location](#changing-default-runtime-location)
+  * [Compact Profiles](#compact-profiles)
+  * [Locales and Charsets](#locales-and-charsets)
+  * [Optional Components](#optional-components)
+  * [Disk Footprint Reduction](#disk-footprint-reduction)
+  * [Java Runtime Slim-Down Configurations](#java-runtime-slim-down-configurations)
+
+
 ## Runtime Flavor Selection
 
 Excelsior JET VM comes with multiple implementations of the runtime system,

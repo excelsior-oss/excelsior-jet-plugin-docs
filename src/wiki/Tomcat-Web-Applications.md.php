@@ -14,12 +14,23 @@ application on a conventional JVM, this has the following benefits:
 * Security and IP protection, as reverse engineering of sensitive application code
   becomes much more expensive and the exposure of yet unknown to you security vulnerabilities is reduced
 
-## Supported Tomcat versions
+## Contents
+
+  * [Supported Tomcat Versions](#supported-tomcat-versions)
+  * [Configuration](#configuration)
+  * [Build Process](#build-process)
+  * [Tomcat Configuration Parameters](#tomcat-configuration-parameters)
+  * [Multiple Web Applications and Tomcat Installation Configuration](#multiple-web-applications-and-tomcat-installation-configuration)
+  * [Test Run](#test-run)
+
+
+## Supported Tomcat Versions
 
 Excelsior JET 11 supports Apache Tomcat 5.0.x (starting from version 5.0.1), 5.5.x, 6.0.x,
 and 7.0.x up to version 7.0.62. Excelsior JET 11.3 adds support for Tomcat 8.0 and Tomcat 7.0.63+ versions.
 
-## Usage
+
+## Configuration
 
 <?php if (MAVEN) : ?>
 The plugin will treat your <?php tool(); ?> project as a Tomcat Web application project if its <?php param('packaging'); ?> type is `war`.
@@ -88,28 +99,32 @@ a set of standard examples in the `webapps` directory, which are most likely not
 So it is safe to remove them from the `webapps` directory of the master Tomcat installation, making it empty.
 
 
-## Build process
+## Build Process
 
-During the build of your application, the plugin first copies the master Tomcat installation to the `jet/build` subdirectory.
+During the build of your application, the plugin first copies the master Tomcat installation to the 
+<?php target_dir('jet/build'); ?> subdirectory of your project.
 Then it copies your main project artifact (`.war` file) to the `webapps` subdirectory of that copy,
 and compiles it all together into a native executable.
 
-Upon success, the plugin creates a directory structure similar to that of the master Tomcat installation in the `jet/app` directory,
-placing the executable into the `jet/app/bin` subdirectory. It also copies the required Excelsior JET Runtime files
-into the `jet/app` directory and binds the resulting executable to that copy of the Runtime.
+Upon success, the plugin creates a directory structure similar to that of the master Tomcat installation 
+in the <?php target_dir('jet/app'); ?> directory,
+placing the executable into the <?php target_dir('jet/app/bin'); ?> subdirectory. 
+It also copies the required Excelsior JET Runtime files
+into the <?php target_dir('jet/app'); ?> directory 
+and binds the resulting executable to that copy of the Runtime.
 
 > Your natively compiled Tomcat application is ready for distribution at this point: you may copy
-> the contents of the `jet/app` directory to another computer that has neither Excelsior JET nor
+> the contents of the <?php target_dir('jet/app'); ?> directory to another computer that has neither Excelsior JET nor
 > the Oracle JRE installed, and the executable should work as expected.
 > You may also run your application using standard Tomcat scripts that are placed into the resulting
-> `jet/app/bin` folder by default.
+> <?php target_dir('jet/app/bin'); ?> folder by default.
 
-Finally, the plugin packs the contents of the `jet/app` directory into
+Finally, the plugin packs the contents of the <?php target_dir('jet/app'); ?> directory into
 a zip archive named `<?php maven_gradle('${project.build.finalName}', '<artifactName>'); ?>.zip`
 so as to aid single file re-distribution.
 Other packaging types that are available for plain Java SE applications are supported for Tomcat as well (see above).
 
-## Tomcat configuration parameters
+## Tomcat Configuration Parameters
 
 Most configuration parameters that are available for 
 [plain Java SE applications](Plain-Java-SE-Applications]
@@ -153,7 +168,7 @@ you may set within the <?php section('tomcat'); ?> section:
 
 * <?php param('genScripts'); ?> - you may continue to use the standard Tomcat scripts such as `bin/startup`
   and `bin/shutdown` with the natively compiled Tomcat, as by default
-  the respective scripts are created in `jet/app/bin` along with the executable.
+  the respective scripts are created in <?php target_dir('jet/app/bin'); ?> along with the executable.
   However, if you are going to launch the created executable directly, you may set
   the <?php param('genScripts'); ?> parameter to `false`.
 
@@ -172,7 +187,8 @@ you may set within the <?php section('tomcat'); ?> section:
 
     **Note:** This functionality is only available in Excelsior JET 11.3 and above.
 
-## Multiple Web applications and Tomcat installation configuration
+
+## Multiple Web Applications and Tomcat Installation Configuration
 
 Excelsior JET can also compile multiple Web applications deployed onto a single Tomcat instance.
 
@@ -194,7 +210,8 @@ Similarly, if you need any additional files included in the resulting installati
 place them in the master Tomcat installation as well: the plugin will copy them into the final package
 automatically.
 
-## Test Run of A Tomcat Web Application
+
+## Test Run
 
 You can launch your Tomcat Web application on Excelsior JET JVM using a JIT compiler
 before pre-compiling it to native code using the

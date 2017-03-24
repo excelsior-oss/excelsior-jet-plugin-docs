@@ -1,3 +1,11 @@
+## Contents
+
+  * [Configuration](#configuration)
+  * [Test Run](#test-run)
+
+
+## Configuration
+
 To create a dynamic library callable from applications written in a non-JVM language instead of a runnable executable, 
 <?php if (MAVEN) : ?>
 add the following Excelsior JET <?php tool(); ?> plugin configuration:
@@ -45,7 +53,7 @@ Instead, you have to use the standard Java SE platform APIs, specifically the In
 and Java Native Interface (JNI).
 See `samples/Invocation` in your Excelsior JET installation directory for detailed examples.
 
-## Test Run for Dynamic Libraries
+## Test Run
 
 To test an invocation dynamic library, you may set
 a "test" <?php param('mainClass'); ?> in the plugin configuration. The `main` method of that class

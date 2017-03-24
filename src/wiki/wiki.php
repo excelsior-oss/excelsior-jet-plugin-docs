@@ -57,6 +57,7 @@
         function github($uri) {echo "https://github.com/excelsior-oss/excelsior-jet-maven-plugin/$uri";}
         function project_file() {echo '`pom.xml`';}
         function project_dir() {echo '${project.basedir}';}
+        function target_dir($dir) {echo "`target/$dir`";}
         function param($n) {echo "`<$n>`";}
         function param_pattern($n, $v) {echo "`<$n>`*`$v`*`</$n>`";}
         function param_value($n, $v) {echo "`<$n>$v</$n>`";}
@@ -69,6 +70,7 @@
         function github($uri) {echo "https://github.com/excelsior-oss/excelsior-jet-gradle-plugin/$uri";}
         function project_file() {echo '`build.gradle`';}
         function project_dir() {echo '<project.projectDir>';}
+        function target_dir($dir) {echo "`build/$dir`";}
         function param($n) {echo "`$n`";}
         function param_pattern($n, $v) {echo "`$n = `*`$v`*";}
         function param_value($n, $v) {echo "`$n = $v`";}

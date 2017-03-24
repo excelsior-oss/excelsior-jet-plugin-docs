@@ -1,6 +1,11 @@
   * [Home](<?php github('wiki'); ?>)
   * [Prerequisites](<?php github('wiki/Prerequisites'); ?>)
   * [Getting Started](<?php github('wiki/Getting-Started'); ?>)
+  * [Build Process](<?php github('wiki/Build-Process'); ?>)
+
+      - [Test Run](<?php github('wiki/Build-Process#test-run'); ?>)
+      - [Compilation](<?php github('wiki/Build-Process#compilation'); ?>)
+      - [Packaging](<?php github('wiki/Build-Process#packaging'); ?>)
 
 **Compilation Settings:**
 
@@ -19,7 +24,6 @@
 
 **Application Type Specifics:**
 
-  * [Plain Java SE Applications](<?php github('wiki/Plain-Java-SE-Applications'); ?>)
   * [Tomcat Web Applications](<?php github('wiki/Tomcat-Web-Applications'); ?>)
   * [Dynamic Libraries](<?php github('wiki/Invocation-Dynamic-Libraries'); ?>)
   * [Windows Services](<?php github('wiki/Windows-Services'); ?>)

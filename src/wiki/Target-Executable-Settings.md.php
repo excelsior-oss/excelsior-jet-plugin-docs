@@ -1,3 +1,11 @@
+## Contents
+
+  * [Data Protection](#data-protection)
+  * [Multi-app Executables](#multi-app-executables)
+  * [Trial Versions](#trial-versions)
+  * [Stack Trace Support](#stack-trace-support)
+  * [Windows Version-Information Resource Configurations](#windows-version-information-resource-configurations)
+
 ## Data Protection
 
 If you do not wish constant data, such as reflection info, Java string literals, or packed resource files,

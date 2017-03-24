@@ -1,3 +1,10 @@
+## Contents
+
+  * [Method Inlining](#method-inlining)
+  * [Startup Accelerator](#startup-accelerator)
+  * [Global Optimizer](#global-optimizer)
+
+
 ## Method Inlining
 
 When optimizing a Java program, the compiler often replaces method call statements with bodies of the methods

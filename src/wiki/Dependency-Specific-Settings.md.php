@@ -3,9 +3,19 @@ the run time dependencies of your  project.
 In addition, the plugin enables you to specify certain processing rules separately
 for each dependency, or for groups of dependencies:
 
-- enforce code protection for all classes
-- enable selective optimization of classes
-- control packing of resource files into the resulting executable
+  - enforce code protection for all classes
+  - enable selective optimization of classes
+  - control packing of resource files into the resulting executable
+
+## Contents
+
+  * [Dependencies Configuration](#dependencies-configuration)
+  * [Code Protection](#code-protection)
+  * [Selective Optimization](#selective-optimization)
+  * [Optimization Presets](#optimization-presets)
+  * [Resource Packing](#resource-packing)
+  * [Ignoring Project Dependencies](#ignoring-project-dependencies)
+
 
 ## Dependencies Configuration
 
