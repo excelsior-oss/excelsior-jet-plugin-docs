@@ -13,6 +13,7 @@
   * [Optimizations](<?php github('wiki/Optimization-Settings'); ?>)
   * [Target Executable](<?php github('wiki/Target-Executable-Settings'); ?>)
   * [Application Apperarance](<?php github('wiki/Application-Appearance'); ?>)
+  * [Raw Compiler Options](<?php github('wiki/Raw-Compiler-Options'); ?>)
 
 **Packaging Settings:**
 
