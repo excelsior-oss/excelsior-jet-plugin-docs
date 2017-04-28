@@ -99,12 +99,15 @@ To set the stack trace support mode, use the <?php param('stackTraceSupport'); ?
 
 ## Windows Version-Information Resource Configurations
 
-On Windows, the plugin automatically adds a
+On Windows, the plugin can automatically add a
 [version-information resource](https://msdn.microsoft.com/en-us/library/windows/desktop/ms646981%28v=vs.85%29.aspx)
-to the resulting executable. This can be disabled by specifying the following
+to the resulting executable. To enable this functionality, specify the following
 configuration:
 
-<?php param_value('addWindowsVersionInfo', 'false'); ?> 
+<?php param_value('addWindowsVersionInfo', 'true'); ?> 
+
+**Backward incompatibile change alert:** Windows version-information resource generation
+used to be enabled by default in plugin versions prior to 1.0.0.
 
 By default, the values of version-information resource strings are derived from project settings.
 The values of <?php param('product'); ?> and <?php param('vendor'); ?> configurations are used verbatim as
