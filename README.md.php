@@ -48,7 +48,7 @@
         print 'ERROR: Expected one command-line argument: "maven" or "gradle"';
         exit (1);
     }
-    function version() {echo '0.9.5';}
+    function version() {echo '1.0.0';}
     if ($argv[1] == 'maven') {
         define('MAVEN', TRUE);
         define('GRADLE', FALSE);
@@ -413,6 +413,21 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 
 ## Release Notes
+
+Version 1.0.0 (??-May-2017)
+
+First non-beta release. Here is what we have done:
+
+  * Reworked plugin documentation and moved it to the Wiki
+  * Tested the plugin against all platforms/editions that Excelsior JET 11.0 and 11.3 support
+  * Fixed a handful of minor bugs reported by users and found during testing
+  * Added the somehow overlooked <?php param('stackAllocation'); ?> parameter
+    that controls allocation of Java objects on the stack
+
+**Backward incompatibile change alert:** Windows version-information resource generation
+is now _off_ by default. To revert to the previous behavior, add
+<?php param_pattern('addWindowsVersionInfo', 'true'); ?> to the plugin configuration.
+
 
 Version 0.9.5 aka 1.0 Release Candidate (15-Feb-2017)
 

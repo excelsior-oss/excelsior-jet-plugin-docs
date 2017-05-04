@@ -1,6 +1,7 @@
 ## Contents
 
   * [Method Inlining](#method-inlining)
+  * [Allocating Objects on the Stack](#allocating-objects-on-the-stack)
   * [Startup Accelerator](#startup-accelerator)
   * [Global Optimizer](#global-optimizer)
 
@@ -20,6 +21,22 @@ The available modes are:
 
 If you need to reduce the size of the executable, opt for the `low` or `tiny-methods-only` setting.
 Note that it does not necessarily worsen application performance.
+
+## Allocating Objects on The Stack
+
+As you know, the Java memory model has no stack objects - class instances put on the stack frame.
+All objects have to be allocated on the heap by the `new` operator and reclaimed by the garbage collector,
+even though the lifetimes of some objects are obvious.
+The Excelsior JET Optimizer performs so called escape analysis to approximate object lifetimes and allocate
+some objects and small arrays on the stack where possible.
+As a result, the compiled applications benefit from both faster object allocation and less intensive garbage collection.
+
+This optimization may however increase consumption of stack memory by application threads,forcing you
+to increase the maximum stack size, which in turn may compromise the scalability of your program.
+So if you are compiling a server-side Java application that runs thousands of threads simultaneously,
+you may wish to disable this optimization using the <?php param('stackAllocation'); ?> plugin parameter:
+
+<?php param_pattern('stackAllocation', 'false'); ?> 
 
 ## Startup Accelerator
 
