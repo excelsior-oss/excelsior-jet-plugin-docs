@@ -36,7 +36,7 @@ to increase the maximum stack size, which in turn may compromise the scalability
 So if you are compiling a server-side Java application that runs thousands of threads simultaneously,
 you may wish to disable this optimization using the <?php param('stackAllocation'); ?> plugin parameter:
 
-<?php param_pattern('stackAllocation', 'false'); ?> 
+<?php param_value('stackAllocation', 'false'); ?> 
 
 ## Startup Accelerator
 
