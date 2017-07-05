@@ -48,7 +48,7 @@
         print 'ERROR: Expected one command-line argument: "maven" or "gradle"';
         exit (1);
     }
-    function version() {echo '1.0.0';}
+    function version() {echo '1.1.0';}
     if ($argv[1] == 'maven') {
         define('MAVEN', TRUE);
         define('GRADLE', FALSE);
@@ -198,7 +198,23 @@ then proceed depending on the type of your application:
         gradlew jetTestRun
 <?php endif; ?>
 
-4.  [Build the project](#building)
+4.  Optionally, collect an execution profile (not available for Intel x86 targets):
+
+<?php if (MAVEN) : ?>
+        mvn jet:profile
+<?php elseif (GRADLE) : ?>
+        gradlew jetProfile
+<?php endif; ?>
+
+5.  [Build the project](#building)
+
+6.  Optionally, run the application:
+
+<?php if (MAVEN) : ?>
+        mvn jet:run
+<?php elseif (GRADLE) : ?>
+        gradlew jetRun
+<?php endif; ?>
 
 #### Tomcat Web Application
 
@@ -231,8 +247,23 @@ then proceed depending on the type of your application:
         gradlew jetTestRun
 <?php endif; ?>
 
-4.  [Build the project](#building)
+4.  Optionally, collect an execution profile (not available for Intel x86 targets):
 
+<?php if (MAVEN) : ?>
+        mvn jet:profile
+<?php elseif (GRADLE) : ?>
+        gradlew jetProfile
+<?php endif; ?>
+
+5.  [Build the project](#building)
+
+6.  Optionally, run the application:
+
+<?php if (MAVEN) : ?>
+        mvn jet:run
+<?php elseif (GRADLE) : ?>
+        gradlew jetRun
+<?php endif; ?>
 
 #### Invocation Library
 
@@ -255,7 +286,17 @@ then proceed depending on the type of your application:
     [section](<?php github('wiki/Invocation-Dynamic-Libraries'); ?>)
     of the plugin documentation.
 
-2.  [Build the project](#building)
+2.  Optionally, create a profiling image (not available for Intel x86 targets):
+
+<?php if (MAVEN) : ?>
+        mvn jet:profile
+<?php elseif (GRADLE) : ?>
+        gradlew jetProfile
+<?php endif; ?>
+
+    and collect an execution profile running your appliction from the image created.
+
+3.  [Build the project](#building)
 
 
 #### Windows Service
@@ -330,7 +371,17 @@ then proceed depending on the type of your application:
     in the "Windows Services" Chapter of the 
     [Excelsior JET for Windows User's Guide.](https://www.excelsiorjet.com/docs/jet/jetw)
 
-5.  [Build the project](#building)
+5.  Optionally, create a profiling image (not available for Intel x86 targets):
+
+<?php if (MAVEN) : ?>
+        mvn jet:profile
+<?php elseif (GRADLE) : ?>
+        gradlew jetProfile
+<?php endif; ?>
+
+    and collect an execution profile installing and running the service from the image created.
+
+6.  [Build the project](#building)
 
 ### Building
 
@@ -413,6 +464,25 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 
 ## Release Notes
+
+Version 1.1.0 (??-July-2017)
+
+Support for new features of Excelsior JET 12 and enchancements:
+
+ * Global optimizer is enabled for all platforms
+ * Profile guided optimizations (PG0) enabled via a special plugin task (not available for Intel x86):
+   <?php if (MAVEN) : ?>
+        mvn jet:profile
+    <?php elseif (GRADLE) : ?>
+        gradlew jetProfile
+   <?php endif; ?>
+* Run task is also introduced to run the natively compiled application just after the build:
+   <?php if (MAVEN) : ?>
+        mvn jet:run
+    <?php elseif (GRADLE) : ?>
+        gradlew jetRun
+   <?php endif; ?>
+* The [issue](https://github.com/excelsior-oss/excelsior-jet-maven-plugin/issues/57) is fixed.
 
 Version 1.0.0 (04-May-2017)
 
@@ -624,7 +694,6 @@ and placing it into a separate directory with required Excelsior JET runtime fil
 Even though we are going to base the plugin development on your feedback in the future, we have our own short-term plan as well.
 So the next few releases will add the following features:
 
-* Excelsior JET 11.3 release features support
 * Multi-component support: building dependencies into separate native libraries
                            to reuse them across multiple <?php tool(); ?> project builds
                            so as to reduce overall compilation time

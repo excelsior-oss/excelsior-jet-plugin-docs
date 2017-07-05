@@ -66,7 +66,7 @@ add the following Excelsior JET <?php tool(); ?> plugin configuration:
 <plugin>
 	<groupId>com.excelsiorjet</groupId>
 	<artifactId>excelsior-jet-maven-plugin</artifactId>
-	<version>0.9.5</version>
+	<version><?php version(); ?></version>
 	<configuration>
         <appType>windows-service</appType>
         <mainClass>*service-main*</mainClass>
@@ -94,7 +94,7 @@ of the <?php project_file(); ?> file, e.g.:
 
 ```gradle
 buildscript {
-    def jetPluginVersion = '0.9.5'
+    def jetPluginVersion = '<?php version(); ?>'
     repositories {
         mavenCentral()
     }
@@ -188,4 +188,12 @@ Unfortunately, a service cannot be registered in the system before its compilati
 so a fully functional Test Run is not available for Windows Services. However, it is recommended
 to add a `public static void main(String args[])` method to your Windows Service main class
 to test your basic application functionality with Test Run.
+
+## Profile
+
+To enable PGO for a service, you may use <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
+However as the plugin cannot install/run/stop/uninstall your service automatically, 
+it just creates a special profiling image at <?php target_dir('jet/appToProfile'); ?>
+and you need to install/start your service manually from that directory then provide a typical load to the service and finally stop  
+and uninstall it.
 

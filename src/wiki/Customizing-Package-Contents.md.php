@@ -12,8 +12,6 @@ in the `src/main/jetresources/packagefiles` subdirectory of your project,
 but you may dynamically generate the contents of that directory by means
 of other <?php tool(); ?> plugins <?php maven_gradle('such as `maven-resources-plugin`', ''); ?>.
 
-**New in 0.9.5:**
-
 If you only need to add a few extra files or folders to the package,
 you may find it more convenient to specify them directly rather than prepare a <?php param('packageFilesDir'); ?> directory.
 You can do that using the <?php section('packageFiles'); ?> configuration section:

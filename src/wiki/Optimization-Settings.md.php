@@ -63,13 +63,14 @@ in the same way as for a [Test Run](#performing-a-test-run).
 
 ## Global Optimizer
 
-The 32-bit versions of Excelsior JET feature the Global Optimizer - a powerful facility that has several
+Excelsior JET features the Global Optimizer - a powerful facility that has several
 important advantages over the default compilation mode:
 
 * single component linking yields an executable that does not require the dynamic libraries
   containing the standard Java library classes,
   thus reducing the size of the installation package and the disk footprint of the compiled application
 * global optimizations improve application performance and reduce the startup time and memory usage
+  especially when combined with [profile guided optimizations](<?php github('wiki/Build-Process#profiling'); ?>).
 
 By default, Excelsior JET uses the *dynamic link model*. It only compiles application classes,
 linking them into an executable that depends on dynamic libraries containing precompiled

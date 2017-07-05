@@ -133,7 +133,7 @@ The available optional components are:
 
 ## Disk Footprint Reduction
 
-The 32-bit versions of Excelsior JET are capable of reducing the disk footprint of an application
+Excelsior JET is capable of reducing the disk footprint of an application
 compiled with the [Global Optimizer](#global-optimizer) enabled, by compressing the (supposedly) unused Java SE API
 classes.
 
@@ -145,12 +145,12 @@ The available modes are:
 
 * `none` - disable compression
 * `medium` - use a simple compression with minimal run time overheads and selective decompression
-* `high-memory` - compress all class files as a whole, resulting in a more significant disk footprint reduction
+* `high-memory` - (32-bit only) compress all class files as a whole, resulting in a more significant disk footprint reduction
                   compared to medium compression. The downside is that the entire bundle
                   has to be decompressed to retrieve a single class, if it turns out to be
                   required at run time. In the `high-memory` mode, the bundle is decompressed
                   onto the heap and can be garbage collected later.
-* `high-disk` - compress as in the `high-memory` mode, decompress to the temp directory
+* `high-disk` - (32-bit only) compress as in the `high-memory` mode, decompress to the temp directory
 
 ## Java Runtime Slim-Down Configurations
 

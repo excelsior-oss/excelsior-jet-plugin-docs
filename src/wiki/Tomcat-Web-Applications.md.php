@@ -40,7 +40,7 @@ To enable native compliation of your Tomcat Web application, you need to copy an
 <plugin>
 	<groupId>com.excelsiorjet</groupId>
 	<artifactId>excelsior-jet-maven-plugin</artifactId>
-	<version>0.9.5</version>
+	<version><?php version(); ?></version>
 	<configuration>
         <tomcatConfiguration>
              <tomcatHome></tomcatHome>
@@ -54,7 +54,7 @@ To enable native compilation of your Tomcat Web application, you need to add the
 
 ```gradle
 buildscript {
-    def jetPluginVersion = '0.9.5'
+    def jetPluginVersion = '<?php version(); ?>'
     repositories {
         mavenCentral()
     }
@@ -179,8 +179,6 @@ you may set within the <?php section('tomcat'); ?> section:
   a <?php section('windowsService'); ?> configuration section as described [here](Windows-Services#windows-service-configuration).
     **Note:** This functionality is only available in Excelsior JET 11.3 and above.
 
-**New in 0.9.5:**
-
 * <?php param('allowUserToChangeTomcatPort'); ?> -  if you opt for `excelsior-installer` packaging for Tomcat on Windows,
   you may have the Excelsior Installer wizard prompt the user to specify the Tomcat HTTP port during installation
   setting this parameter to `true`.
@@ -223,3 +221,8 @@ Technically, you can terminate it using <key>Ctrl-C</key>, but that would termin
 and would not constitute a correct Tomcat termination.
 So it is recommended to use the standard Tomcat `shutdown` script for correct Tomcat termination
 at the end of a Test Run. You may launch it from any standard Tomcat installation.
+
+## Profile
+
+Profile task is also available for Tomcat web applications via <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
+However, the same note as for Test Run is applied to it: use standard Tomcat `shutdown` script for correct Tomcat termination.

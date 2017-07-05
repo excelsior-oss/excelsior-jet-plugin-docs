@@ -50,6 +50,7 @@
         print 'ERROR: Expected two command-line arguments: maven|gradle <wiki-page-name>';
         exit (1);
     }
+    function version() {echo '1.1.0';}
     if ($argv[1] == 'maven') {
         define('MAVEN', TRUE);
         define('GRADLE', FALSE);

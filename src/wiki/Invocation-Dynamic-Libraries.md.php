@@ -14,7 +14,7 @@ add the following Excelsior JET <?php tool(); ?> plugin configuration:
 <plugin>
 	<groupId>com.excelsiorjet</groupId>
 	<artifactId>excelsior-jet-maven-plugin</artifactId>
-	<version>0.9.5</version>
+	<version><?php version(); ?></version>
 	<configuration>
         <appType>dynamic-library</appType>
 	</configuration>
@@ -25,7 +25,7 @@ you need to add the plugin dependency to the `buildscript` configuration of the 
 
 ```gradle
 buildscript {
-    def jetPluginVersion = '0.9.5'
+    def jetPluginVersion = '<?php version(); ?>'
     repositories {
         mavenCentral()
     }
@@ -58,3 +58,11 @@ See `samples/Invocation` in your Excelsior JET installation directory for detail
 To test an invocation dynamic library, you may set
 a "test" <?php param('mainClass'); ?> in the plugin configuration. The `main` method of that class
 should in turn call methods that are subject for usage from a non-JVM language.
+
+## Profile
+
+To enable PGO for an invocation dynamic library, you may use <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
+However as the plugin cannot "run" your library, it just creates a special profiling image at <?php target_dir('jet/appToProfile'); ?>
+and you need to start your application manually from that directory that will load your invocation library and then
+you need to provide a typical load to the library from the application.
+
