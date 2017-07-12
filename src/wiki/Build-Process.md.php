@@ -1,10 +1,11 @@
 The Excelsior JET build process has four stages:
 
   * [Test Run](#test-run) (optional)
-  * [Profiling](#profiling) (optional)
+  * [Profiling](#profiling) (optional, requires Excelsior JET, Enterprise Edition or Excelsior JET Embedded, version 12 or above)
   * [Compilation](#compilation)
   * [Packaging](#packaging)
-  * [Running](#running)
+
+There is also a task for [running](#running) the natively compiled application after the build.
 
 ## Test Run
 
@@ -77,46 +78,47 @@ has its own peculiarities. Refer to the respective subsections for details:
 
 **New in 1.1.0:**
 
-It is widely known that Oracle HotSpot and other advanced JIT compilers collect execution profile data and 
-use them to optimize code more effectively. 
-A lesser known fact is that all popular C++ compilers, free and commercial, implement profile-guided optimization (PGO) as well. 
-The main difference is that the profile data should be collected separately by running the application and then fed to the compiler. 
+It's no secret that the Oracle HotSpot VM and other advanced language runtimes collect application
+execution profile data and feed it to the JIT compiler for better code optimization.
+A lesser known fact is that all popular C++ compilers, free and commercial, implement profile-guided optimization (PGO) as well.
+The main difference is that profile data only has to be collected once on the developer's system
+as a separate build step.
 
-Starting from version 12, Excelsior JET, Enterprise Edition and Excelsior JET Embedded offer PGO as an option. 
-If you wish to use PGO you need to perform an additional profiling task with the following command:
+Starting from version 12, Excelsior JET, Enterprise Edition and Excelsior JET Embedded offer PGO as an option.
+In order to use it, you need to invoke an additional profiling task with the following command:
 
 <?php if (MAVEN) : ?>
-```
-mvn jet:profile
-```
+    mvn jet:profile
 <?php elseif (GRADLE) : ?>
-```
-gradlew jetProfile
-```
+    gradlew jetProfile
 <?php endif; ?>
 
-During the task a special profiling image will be created at <?php target_dir('jet/appToProfile'); ?> and 
-the application will be started from that directory. At that point, you need to provide to your application 
-a typical load to collect the profile.
-At application stop, the gathered profile will be placed into the `<?php project_dir(); ?>/src/main/jetresources` directory.
-As for Test Run, it is recommended to commit the profile (`.jprof`) to VCS to allow the plugin
-to re-use it during automatic application builds without performing a Profile task.
+The plugin will prepare a special profiling image of the application at <?php target_dir('jet/appToProfile'); ?>
+and launch it from that directory. At that point, you will need to supply a typical load to your application
+in order to collect a representative execution profile.
+Upon application exit, the gathered profile (`.jprof` file) will be placed into the
+`<?php project_dir(); ?>/src/main/jetresources` directory.
+Just as for the profiles collected during a Test Run, it is recommended to commit that file
+to VCS to avoid running the Profile task during subsequent builds.
+Just make sure to re-profile your application after making substantial changes to its source code.
 
-Your application may require command-line arguments to run. 
-If that is the case, set the `runArgs` plugin parameter the same way as for Test Run.
-Note however, that multi-app executables has a special command line syntax where you can change a main class and/or VM arguments, 
-so if you opted to create such an executable and would like to pass not only usual arguments during the profile you may use
-`multiAppRunArgs` parameter instead of `runArgs` parameter. 
-You may also pass the arguments to a mult-app aplication via the `jet.multiAppRunArgs` system property as a comma-separated string.
+If the application requires command-line arguments, set the <?php param('runArgs'); ?> plugin parameter
+the same way as for the Test Run task.
 
-The Profile procedure for Invocation Dynamic Libraries and Windows Services application types is bit more complicated.
-As plugin cannot run automatically such applications, it just creates the image at <?php target_dir('jet/appToProfile'); ?>
-and you need to start your application manually from that directory providing a typical load to it.
-Note, that at application stop, the gathered profile will also be placed into the `<?php project_dir(); ?>/src/main/jetresources` directory.
+**Notice**: Multi-app executables have a special command line syntax that enables you to specify a particular main class
+and/or VM arguments in addition to the normal agruments that get passed to the `main()` method.
+If you need to specify any of those, use the <?php param('multiAppRunArgs'); ?> parameter instead of the <?php param('runArgs'); ?> one.
+You may also pass the arguments to a multi-app aplication via the `jet.multiAppRunArgs` system property as a comma-separated string.
 
-## Execution profiles Configuration Parameters
+Profiling invocation dynamic libraries and Windows services is a bit more complicated.
+As the plugin cannot run them automatically, it just creates an image at <?php target_dir('jet/appToProfile'); ?>.
+You then need to load the library or start the service from that directory and supply a typical load to it.
+The gathered profile will also be placed into the `<?php project_dir(); ?>/src/main/jetresources` directory.
 
-The pluging has a few configuration parameters for a Test Run and the Profile task via the <?php section('execProfiles'); ?> configuration section:
+## Execution Profiles Configuration Parameters
+
+The plugin has a few configuration parameters for the Test Run and Profile tasks
+that you can specify in the <?php section('execProfiles'); ?> configuration section:
 
 <?php if (MAVEN) : ?>
 ```xml
@@ -130,51 +132,51 @@ execProfiles {
 ```
 <?php endif; ?>
 
-that may contain parameters described below.
+That section may contain parameters described below.
 
-* It may be necessary to profile the natively compiled application on a computer other than the one
-  conducting the build, e.g. because profiling requires a specially configured environment.
-  Setting the parameter 
+  * It may be necessary to profile the natively compiled application on a computer other than the one
+    conducting the build, e.g. because profiling requires a specially configured environment.
+    Setting the parameter
 
-   <?php param_value('profileLocally', 'false'); ?>  
+    <?php param_value('profileLocally', 'false'); ?> 
 
-  forces the plugin to create a special **profiling image**
-  that you can then deploy to such an environment to collect an application execution profile.
+    forces the plugin to create a special *profiling image*
+    that you can then deploy to such an environment to collect an application execution profile.
+    Note that this parameter is always set to `false` for the cross-compiling flavors of Excelsior JET,
+    e.g. those targeting Linux/ARM.
  
-  You can also set the `jet.create.profiling.image` system property to force the Profile task to create
-  such an image instead of running the generated binary locally.
-  Note that this parameter is always set to `false` for the cross-compiling flavors of Excelsior JET,
-  e.g. those targeting Linux/ARM.
+    You can also set the `jet.create.profiling.image` system property to force the Profile task to create
+    such an image instead of running the generated binary locally.
 
-  For the case, the profile (`.jprof`) will be created in the application launching directory at application stop, 
-  and you will need to copy it manually to the `<?php project_dir(); ?>/src/main/jetresources` of the build machine
-  to enable PGO.
+    An execution profile (`.jprof` file) will be created in the application launch directory upon its exit,
+    and you will need to copy it manually to the `<?php project_dir(); ?>/src/main/jetresources` on the build machine
+    to enable PGO.
 
-* <?php param_pattern('profilingImageDir', 'profiling-image-dir'); ?> - directory where the special "profiling" image 
-  of the natively compiled application has to be placed.
+  * <?php param_pattern('profilingImageDir', 'profiling-image-dir'); ?> - directory where the special "profiling" image
+    of the natively compiled application has to be placed.
 
-  By default, points to the <?php target_dir('jet/appToProfile'); ?> directory.
+    By default, points to the <?php target_dir('jet/appToProfile'); ?> directory.
 
-  To facilitate deployment of the profiling image to a reference system when <?php param('profileLocally'); ?>
-  is set to `false`, the plugin also creates a zip archive that contains a copy of that image,
-  gives it the same base name and places it next to this directory.
+    To facilitate deployment of the profiling image to a reference system when <?php param('profileLocally'); ?> 
+    is set to `false`, the plugin also creates a zip archive that contains a copy of that image,
+    gives it the same base name and places it next to this directory.
 
-*  <?php param_pattern('daysToWarnAboutOutdatedProfiles', 'days'); ?> - profile validity threshold in days.
+  * <?php param_pattern('daysToWarnAboutOutdatedProfiles', 'days'); ?> - profile validity threshold in days.
 
-   It is recommended to re-collect all profiles (`.startup`, `.usg`, `.jprof`) periodically as your code base evolves.
-   The plugins issue a warning upon detecting an outdated profile during a build.
-   With this parameter, you can adjust the respective threshold, measured in days,
-   or set it to `0` to disable the warning. The default value is 30.
+    It is recommended to re-collect all profiles (`.startup`, `.usg`, `.jprof`) periodically as your code base evolves.
+    The plugin issues a warning upon detecting an outdated profile during a build.
+    With this parameter, you can adjust the respective threshold, measured in days,
+    or set it to `0` to disable the warning. The default value is 30.
 
-* <?php param_pattern('checkExistence', 'profile-type'); ?> - force the plugin to check that all or certain application profiles 
-   are available before starting a build.
-   Valid values are: `all` , `test-run`, `profile`, `none` (default):
-     - `test-run` - profiles collected by the Test Run task (`.usg`, `.startup`).
-     - `profile` - application executiion profile collected by the Profile task (`.jprof`).
-     -  `all` - all profiles (`.usg`, `.startup`, and `.jprof`).
+  * <?php param_pattern('checkExistence', 'profile-type'); ?> - force the plugin to check that all or certain
+    application profiles are available before starting a build.
+    Valid values are: `all` , `test-run`, `profile`, `none` (default):
+      - `test-run` - profiles collected by the Test Run task (`.usg`, `.startup`).
+      - `profile` - application execution profile collected by the Profile task (`.jprof`).
+      - `all` - all profiles (`.usg`, `.startup`, and `.jprof`).
 
-* <?php param('outputDir'); ?> and <?php param('outputName'); ?> parameters control the placement of gathered profiles 
-  both for a Test Run and the Profile task.
+  * <?php param('outputDir'); ?> and <?php param('outputName'); ?> parameters control the placement of gathered profiles
+    for both Test Run and Profile tasks.
 
 ## Compilation
 
@@ -216,20 +218,15 @@ See also:
 
 ## Running 
 
-After sucessfull build of the application you may want to run it right from the plugin to verify 
+After a sucessfull build of the application you may want to run it using the plugin to verify
 that it works as expected.
 
-To run a plain Java SE or Tomcat web application, execute the following <?php tool(); ?> command:
+To run a plain Java SE application or a Tomcat Web application, execute the following <?php tool(); ?> command:
 
 <?php if (MAVEN) : ?>
-```
-mvn jet:run
-```
+    mvn jet:run
 <?php elseif (GRADLE) : ?>
-```
-gradlew jetRun
-```
+    gradlew jetRun
 <?php endif; ?>
 
-the `runArgs` and `multiAppRunArgs` plugin parameters described above can be used for the Run as well.
-
+The Run task uses the `runArgs` and `multiAppRunArgs` plugin parameters described above.

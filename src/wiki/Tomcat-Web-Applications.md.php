@@ -22,6 +22,7 @@ application on a conventional JVM, this has the following benefits:
   * [Tomcat Configuration Parameters](#tomcat-configuration-parameters)
   * [Multiple Web Applications and Tomcat Installation Configuration](#multiple-web-applications-and-tomcat-installation-configuration)
   * [Test Run](#test-run)
+  * [Profiling](#profiling)
 
 
 ## Supported Tomcat Versions
@@ -222,7 +223,7 @@ and would not constitute a correct Tomcat termination.
 So it is recommended to use the standard Tomcat `shutdown` script for correct Tomcat termination
 at the end of a Test Run. You may launch it from any standard Tomcat installation.
 
-## Profile
+## Profiling
 
-Profile task is also available for Tomcat web applications via <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
-However, the same note as for Test Run is applied to it: use standard Tomcat `shutdown` script for correct Tomcat termination.
+Profiling Tomcat Web applications is supported via the <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
+However, the same notice as for the Test Run applies: use the standard Tomcat `shutdown` script to ensure correct termination.

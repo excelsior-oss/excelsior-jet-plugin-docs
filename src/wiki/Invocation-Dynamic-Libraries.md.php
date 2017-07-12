@@ -2,6 +2,7 @@
 
   * [Configuration](#configuration)
   * [Test Run](#test-run)
+  * [Profiling](#profiling)
 
 
 ## Configuration
@@ -59,10 +60,11 @@ To test an invocation dynamic library, you may set
 a "test" <?php param('mainClass'); ?> in the plugin configuration. The `main` method of that class
 should in turn call methods that are subject for usage from a non-JVM language.
 
-## Profile
+## Profiling
 
-To enable PGO for an invocation dynamic library, you may use <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
-However as the plugin cannot "run" your library, it just creates a special profiling image at <?php target_dir('jet/appToProfile'); ?>
-and you need to start your application manually from that directory that will load your invocation library and then
-you need to provide a typical load to the library from the application.
+To enable PGO for an invocation dynamic library, use the same <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
+However, as a separate client application is likely needed to collect a representative execution profile,
+the plugin would only create a special profiling image at <?php target_dir('jet/appToProfile'); ?>.
+That image contains the natively compiled library and any Excelsior JET Runtime files it requires.
+You would then need to run an application that would load that library and use it extensively.
 

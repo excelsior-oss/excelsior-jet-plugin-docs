@@ -198,7 +198,7 @@ then proceed depending on the type of your application:
         gradlew jetTestRun
 <?php endif; ?>
 
-4.  Optionally, collect an execution profile (not available for Intel x86 targets):
+4.  Optionally, collect an execution profile (not available for 32-bit Intel x86 targets yet):
 
 <?php if (MAVEN) : ?>
         mvn jet:profile
@@ -207,14 +207,6 @@ then proceed depending on the type of your application:
 <?php endif; ?>
 
 5.  [Build the project](#building)
-
-6.  Optionally, run the application:
-
-<?php if (MAVEN) : ?>
-        mvn jet:run
-<?php elseif (GRADLE) : ?>
-        gradlew jetRun
-<?php endif; ?>
 
 #### Tomcat Web Application
 
@@ -247,7 +239,7 @@ then proceed depending on the type of your application:
         gradlew jetTestRun
 <?php endif; ?>
 
-4.  Optionally, collect an execution profile (not available for Intel x86 targets):
+4.  Optionally, collect an execution profile (not available for 32-bit Intel x86 targets yet):
 
 <?php if (MAVEN) : ?>
         mvn jet:profile
@@ -257,13 +249,6 @@ then proceed depending on the type of your application:
 
 5.  [Build the project](#building)
 
-6.  Optionally, run the application:
-
-<?php if (MAVEN) : ?>
-        mvn jet:run
-<?php elseif (GRADLE) : ?>
-        gradlew jetRun
-<?php endif; ?>
 
 #### Invocation Library
 
@@ -286,7 +271,7 @@ then proceed depending on the type of your application:
     [section](<?php github('wiki/Invocation-Dynamic-Libraries'); ?>)
     of the plugin documentation.
 
-2.  Optionally, create a profiling image (not available for Intel x86 targets):
+2.  Optionally, create a profiling image (not available for 32-bit Intel x86 targets yet):
 
 <?php if (MAVEN) : ?>
         mvn jet:profile
@@ -294,7 +279,7 @@ then proceed depending on the type of your application:
         gradlew jetProfile
 <?php endif; ?>
 
-    and collect an execution profile running your appliction from the image created.
+    and collect an execution profile by running a test application that loads your library from the created image.
 
 3.  [Build the project](#building)
 
@@ -371,7 +356,7 @@ then proceed depending on the type of your application:
     in the "Windows Services" Chapter of the 
     [Excelsior JET for Windows User's Guide.](https://www.excelsiorjet.com/docs/jet/jetw)
 
-5.  Optionally, create a profiling image (not available for Intel x86 targets):
+5.  Optionally, create a profiling image (not available for 32-bit Intel x86 targets yet):
 
 <?php if (MAVEN) : ?>
         mvn jet:profile
@@ -379,7 +364,7 @@ then proceed depending on the type of your application:
         gradlew jetProfile
 <?php endif; ?>
 
-    and collect an execution profile installing and running the service from the image created.
+    and collect an execution profile by installing and running the service from the created image.
 
 6.  [Build the project](#building)
 
@@ -388,11 +373,11 @@ then proceed depending on the type of your application:
 <?php if (MAVEN) : ?>
 Run Maven with the `jet:build` goal:
 
-        mvn jet:build
+    mvn jet:build
 <?php elseif (GRADLE) : ?>
 Use the following command line to build the project:
 
-        gradlew jetBuild
+    gradlew jetBuild
 <?php endif; ?>
 
 At the end of a successful build, the plugin will place your natively compiled 
@@ -400,7 +385,16 @@ Java application/library and the required pieces of Excelsior JET Runtime:
 
   * in the <?php target_dir('jet/app'); ?> subdirectory of your project
   * in a zip archive named `<?php maven_gradle('${project.build.finalName}', '<artifactName>'); ?>.zip`.
-       
+
+If your project is a plain Java SE application or Tomcat Web application, you can then
+run it:
+
+<?php if (MAVEN) : ?>
+    mvn jet:run
+<?php elseif (GRADLE) : ?>
+    gradlew jetRun
+<?php endif; ?>
+
 Refer to [plugin documentation](<?php github('wiki'); ?>) for further instructions.
 
 
@@ -465,24 +459,29 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 ## Release Notes
 
-Version 1.1.0 (??-July-2017)
+Version 1.1.0 (07-Jul-2017)
 
-Support for new features of Excelsior JET 12 and enchancements:
+Support for new features of Excelsior JET 12 and other enhancements:
 
- * Global optimizer is enabled for all platforms
- * Profile guided optimizations (PG0) enabled via a special plugin task (not available for Intel x86):
-   <?php if (MAVEN) : ?>
+  * Global Optimizer is now enabled for all target platforms
+  * **Profile** task introduced to enable the use of Profile-Guided Optimization
+    (not available for 32-bit Intel x86 targets yet):
+
+    <?php if (MAVEN) : ?>
         mvn jet:profile
     <?php elseif (GRADLE) : ?>
         gradlew jetProfile
-   <?php endif; ?>
-* Run task is also introduced to run the natively compiled application just after the build:
-   <?php if (MAVEN) : ?>
+    <?php endif; ?>
+
+  * **Run** task introduced for running the natively compiled application right after the build:
+
+    <?php if (MAVEN) : ?>
         mvn jet:run
     <?php elseif (GRADLE) : ?>
         gradlew jetRun
-   <?php endif; ?>
-* The [issue](https://github.com/excelsior-oss/excelsior-jet-maven-plugin/issues/57) is fixed.
+    <?php endif; ?>
+
+  * Fix for a file copying [issue](https://github.com/excelsior-oss/excelsior-jet-maven-plugin/issues/57).
 
 Version 1.0.0 (04-May-2017)
 

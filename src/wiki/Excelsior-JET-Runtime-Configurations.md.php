@@ -143,14 +143,14 @@ To enable disk footprint reduction, add the following parameter to the <?php sec
 
 The available modes are:
 
-* `none` - disable compression
-* `medium` - use a simple compression with minimal run time overheads and selective decompression
-* `high-memory` - (32-bit only) compress all class files as a whole, resulting in a more significant disk footprint reduction
-                  compared to medium compression. The downside is that the entire bundle
-                  has to be decompressed to retrieve a single class, if it turns out to be
-                  required at run time. In the `high-memory` mode, the bundle is decompressed
-                  onto the heap and can be garbage collected later.
-* `high-disk` - (32-bit only) compress as in the `high-memory` mode, decompress to the temp directory
+  * `none` - disable compression
+  * `medium` - use a generic compression algorithm with minimal run time overheads and selective decompression
+  * `high-memory` - (32-bit only) compress all class files as a whole, resulting in a more significant disk footprint reduction
+                    compared to medium compression. The downside is that the entire bundle
+                    has to be decompressed to retrieve a single class, if it turns out to be
+                    required at run time. In the `high-memory` mode, the bundle is decompressed
+                    onto the heap and can be garbage collected later.
+  * `high-disk` - (32-bit only) compress as in the `high-memory` mode, decompress to the temp directory
 
 ## Java Runtime Slim-Down Configurations
 
@@ -167,7 +167,7 @@ classes implementing those APIs and the associated files, placing them in a sepa
 The detached package should be placed on a Web server so that the JET Runtime could download it
 if the deployed application attempts to use any of the detached components via JNI or the Reflection API.
 
-**Note:** This functionality is deprecated in Excelsior JET 11.3
+**Note:** This functionality is deprecated since Excelsior JET 11.3
           in favor of the newly added [Compact Profiles](#compact-profiles) feature,
           and will be removed in future versions.
 
