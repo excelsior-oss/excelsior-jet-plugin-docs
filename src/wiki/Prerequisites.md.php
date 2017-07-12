@@ -1,10 +1,12 @@
 Before using this plugin, you need to install Excelsior JET.
-You may find a fully functional evaluation version of Excelsior JET [here](http://www.excelsiorjet.com/evaluate).
+You may find a fully functional evaluation version of Excelsior JET [here](https://www.excelsiorjet.com/evaluate).
 It is free for evaluation purposes and the only limitation it has is that it expires 90 days
 after installation, along with all compiled applications.
 
-**Note:** Excelsior JET does not yet support cross-compilation, so you need to build your application on each target platform
-separately. The supported platforms are Windows (32- and 64-bit), Linux (32- and 64-bit), and OS X (64-bit).
+**Note:** As of version 12, Excelsior JET does not support cross-compilation (the only exception is
+Excelsior JET Embedded for Linux/ARM, which is hosted on Windows).
+This means that you need to build your application on each platform separately.
+The supported platforms are Windows (32- and 64-bit), Linux (32- and 64-bit), and OS X (64-bit).
 
 ## Excelsior JET Installation Directory Lookup
 

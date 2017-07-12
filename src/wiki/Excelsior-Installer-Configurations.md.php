@@ -46,8 +46,6 @@ that has the following configuration parameters:
 
 * <?php param_pattern('installerSplash', 'installer-splash-screen-image'); ?> - default is `<?php project_dir(); ?>/src/main/jetresources/installerSplash.bmp`
 
-**New in 0.9.5:**
-
 The following parameters are only available for Excelsior JET 11.3 and above:
 
 * <?php param_pattern('language', 'setup-language'); ?> - force the installer to display its messages in a particular language.

@@ -47,7 +47,7 @@ All in all, the JET Runtime recognizes the following standard JVM arguments:
 > **Note:** Setting maximum heap size to zero (default) enables adaptive heap sizing.
 > Refer to the *"Memory Management"* section of the *"Application Considerations"* chapter
 > of the Excelsior JET User's Guide
-> and [Knowledge Base Article #25](http://www.excelsiorjet.com/kb/25/)
+> and [Knowledge Base Article #25](https://www.excelsiorjet.com/kb/25/)
 > for more information.
 
 `-Xss` - set maximum thread stack size

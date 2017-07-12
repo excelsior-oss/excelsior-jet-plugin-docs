@@ -16,7 +16,7 @@ of your <?php project_file(); ?> file:
 <plugin>
 	<groupId>com.excelsiorjet</groupId>
 	<artifactId>excelsior-jet-maven-plugin</artifactId>
-	<version>0.9.5</version>
+	<version><?php version(); ?></version>
 	<configuration>
 		<mainClass></mainClass>
 	</configuration>
@@ -35,7 +35,7 @@ of your <?php project_file(); ?> file first:
 
 ```gradle
 buildscript {
-    ext.jetPluginVersion = '0.9.5'
+    ext.jetPluginVersion = '<?php version(); ?>'
     repositories {
         mavenCentral()
     }

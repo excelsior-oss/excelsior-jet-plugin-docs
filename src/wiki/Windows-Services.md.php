@@ -17,6 +17,7 @@ through the start button in the Windows Control Panel/Services).
   * [Adding Dependency on the Excelsior JET WinService API](#adding-dependency-on-the-excelsior-jet-winservice-api)
   * [Windows Service Configuration](#windows-service-configuration)
   * [Test Run](#test-run)
+  * [Profiling](#profiling)
 
 
 ## Adding Dependency on the Excelsior JET WinService API
@@ -66,7 +67,7 @@ add the following Excelsior JET <?php tool(); ?> plugin configuration:
 <plugin>
 	<groupId>com.excelsiorjet</groupId>
 	<artifactId>excelsior-jet-maven-plugin</artifactId>
-	<version>0.9.5</version>
+	<version><?php version(); ?></version>
 	<configuration>
         <appType>windows-service</appType>
         <mainClass>*service-main*</mainClass>
@@ -94,7 +95,7 @@ of the <?php project_file(); ?> file, e.g.:
 
 ```gradle
 buildscript {
-    def jetPluginVersion = '0.9.5'
+    def jetPluginVersion = '<?php version(); ?>'
     repositories {
         mavenCentral()
     }
@@ -189,3 +190,10 @@ so a fully functional Test Run is not available for Windows Services. However, i
 to add a `public static void main(String args[])` method to your Windows Service main class
 to test your basic application functionality with Test Run.
 
+## Profiling
+
+To enable PGO for a service, use the <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
+However, as the plugin cannot do the service install-start-stop-uninstall cycle automatically,
+it just creates a special profiling image at <?php target_dir('jet/appToProfile'); ?>.
+You have to resort to some other means to install the service from that directory, start it,
+put under sufficient load to collect a representative profile, then stop the service and uninstall it.

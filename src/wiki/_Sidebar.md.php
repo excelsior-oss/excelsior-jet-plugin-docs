@@ -4,8 +4,10 @@
   * [Build Process](<?php github('wiki/Build-Process'); ?>)
 
       - [Test Run](<?php github('wiki/Build-Process#test-run'); ?>)
+      - [Profiling](<?php github('wiki/Build-Process#profiling'); ?>)
       - [Compilation](<?php github('wiki/Build-Process#compilation'); ?>)
       - [Packaging](<?php github('wiki/Build-Process#packaging'); ?>)
+      - [Running](<?php github('wiki/Build-Process#running'); ?>)
 
 **Compilation Settings:**
 
