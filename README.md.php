@@ -459,6 +459,18 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 ## Release Notes
 
+<?php if (MAVEN) : ?>
+Version 1.1.2 (26-Oct-2017)
+
+Fix for `NullPointerException` when a shortcut with no icon is used for Excelsior Installer backend (issue #62)
+<?php endif; ?>
+
+<?php if (GRADLE) : ?>
+Version 1.1.1 (01-Aug-2017)
+
+<?php param('jetHome'); ?> plugin parameter ignoring (issue #31) fix
+<?php endif; ?>
+
 Version 1.1.0 (07-Jul-2017)
 
 Support for new features of Excelsior JET 12 and other enhancements:
