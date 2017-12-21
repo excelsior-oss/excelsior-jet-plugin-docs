@@ -70,7 +70,7 @@ where you distribute your application can be added to the package with the follo
   <locales>
     <locale>Locale1</locale>
     <locale>Locale2</locale>
-  <locales>
+  </locales>
 </runtime>
 ```
 
