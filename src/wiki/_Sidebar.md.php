@@ -11,6 +11,7 @@
 
 **Compilation Settings:**
 
+  * [Incremenatl Compilation](<?php github('wiki/Incremental-Compilation'); ?>)
   * [Dependency-Specific Settings](<?php github('wiki/Dependency-Specific-Settings'); ?>)
   * [Optimizations](<?php github('wiki/Optimization-Settings'); ?>)
   * [Target Executable](<?php github('wiki/Target-Executable-Settings'); ?>)
