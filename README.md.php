@@ -48,7 +48,7 @@
         print 'ERROR: Expected one command-line argument: "maven" or "gradle"';
         exit (1);
     }
-    function version() {echo '1.1.2';}
+    function version() {echo '1.2.0';}
     if ($argv[1] == 'maven') {
         define('MAVEN', TRUE);
         define('GRADLE', FALSE);
@@ -461,12 +461,12 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 Version 1.2.0 (??-May-2018)
 
-<?php section('pdb'); ?> configuration section is introduced to control the placement of the Project Database (PDB).
-PDB is used for incremental compilation so only the changed project dependencies
+<?php section('pdb'); ?> configuration section introduced to control the location of the Project Database (PDB).
+PDB is used for incremental compilation: once a full build succeeds, only the changed project dependencies
 are recompiled during the subsequent builds.
-The configuration as well as incremental compilation is avilable only since just released Excelsior JET 15 for non-x86 targets.
-This release of the plugin places PDB outside of the build directory by default to enable incremental compilation even for clean builds.
-In addition, this version of the plugin also introduces <?php if (MAVEN) : ?>`jet:clean` <?php elseif (GRADLE) : ?> `jetClean` <?php endif; ?> task to clean the PDB.
+The configuration, as well as the incremental compilation feature, are available only for Excelsior JET 15 and above, and only for targets other than 32-bit x86.
+This release of the plugin places the PDB outside of the build directory by default to enable incremental compilation even for clean builds.
+In addition, this version of the plugin also introduces the <?php if (MAVEN) : ?>`jet:clean` <?php elseif (GRADLE) : ?> `jetClean` <?php endif; ?> task for cleaning the PDB.
 
 <?php if (MAVEN) : ?>
 Version 1.1.3 (20-Apr-2018)
