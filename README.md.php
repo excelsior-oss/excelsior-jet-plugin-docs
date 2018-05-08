@@ -459,7 +459,7 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 ## Release Notes
 
-Version 1.2.0 (??-May-2018)
+Version 1.2.0 (08-May-2018)
 
 <?php section('pdb'); ?> configuration section introduced to control the location of the Project Database (PDB).
 PDB is used for incremental compilation: once a full build succeeds, only the changed project dependencies
