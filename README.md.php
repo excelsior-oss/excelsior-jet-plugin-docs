@@ -48,7 +48,7 @@
         print 'ERROR: Expected one command-line argument: "maven" or "gradle"';
         exit (1);
     }
-    function version() {echo '1.1.2';}
+    function version() {echo '1.2.0';}
     if ($argv[1] == 'maven') {
         define('MAVEN', TRUE);
         define('GRADLE', FALSE);
@@ -459,11 +459,31 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 ## Release Notes
 
+Version 1.2.0 (08-May-2018)
+
+<?php section('pdb'); ?> configuration section introduced to control the location of the Project Database (PDB).
+PDB is used for incremental compilation: once a full build succeeds, only the changed project dependencies
+are recompiled during the subsequent builds.
+The configuration, as well as the incremental compilation feature, are available only for Excelsior JET 15 and above, and only for targets other than 32-bit x86.
+This release of the plugin places the PDB outside of the build directory by default to enable incremental compilation even for clean builds.
+In addition, this version of the plugin also introduces the <?php if (MAVEN) : ?>`jet:clean` <?php elseif (GRADLE) : ?> `jetClean` <?php endif; ?> task for cleaning the PDB.
+
 <?php if (MAVEN) : ?>
+Version 1.1.3 (20-Apr-2018)
+
+Filter `pom` dependencies (issue #69).
+<?php endif; ?>
+
+<?php if (GRADLE) : ?>
+Version 1.1.3 (25-Dec-2017)
+
+Fix for issue: "Project task path for nested multiprojects generate incorrect path" (#37)
+
+<?php endif; ?>
+
 Version 1.1.2 (26-Oct-2017)
 
-Fix for `NullPointerException` when a shortcut with no icon is used for Excelsior Installer backend (issue #62)
-<?php endif; ?>
+Fix for `NullPointerException` when a shortcut with no icon is used for Excelsior Installer backend (issue (#62)[https://github.com/excelsior-oss/excelsior-jet-maven-plugin/issues/62])
 
 <?php if (GRADLE) : ?>
 Version 1.1.1 (01-Aug-2017)
@@ -699,15 +719,3 @@ Version 0.1.0 (24-Jun-2016)
 * Initial release supporting compilation of the Gradle Project with all dependencies into native executable
 and placing it into a separate directory with required Excelsior JET runtime files.
 <?php endif; ?>
-
-## Roadmap
-
-Even though we are going to base the plugin development on your feedback in the future, we have our own short-term plan as well.
-So the next few releases will add the following features:
-
-* Multi-component support: building dependencies into separate native libraries
-                           to reuse them across multiple <?php tool(); ?> project builds
-                           so as to reduce overall compilation time
-* Code signing.
-
-Note that the order of appearance of these features is not fixed and can be adjusted based on your feedback.
