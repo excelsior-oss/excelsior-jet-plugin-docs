@@ -9,6 +9,8 @@ The current version of the plugin can handle four types of applications:
 * **Plain Java SE applications**, i.e. applications that have a main class
 and have all their dependencies explicitly listed in the JVM classpath at launch time, and
 
+*  **Spring Boot applications**, packaged into Spring Boot executable jar or war.
+
 * **Tomcat Web applications** &mdash; `.war` files that can be deployed to the
   Apache Tomcat application server.
 

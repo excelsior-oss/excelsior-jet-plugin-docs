@@ -17,7 +17,7 @@ add the following Excelsior JET <?php tool(); ?> plugin configuration:
 	<artifactId>excelsior-jet-maven-plugin</artifactId>
 	<version><?php version(); ?></version>
 	<configuration>
-        <appType>dynamic-library</appType>
+          <appType>dynamic-library</appType>
 	</configuration>
 </plugin>
 ```

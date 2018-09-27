@@ -29,7 +29,7 @@ application on a conventional JVM, this has the following benefits:
 
 Excelsior JET 11 supports Apache Tomcat 5.0.x (starting from version 5.0.1), 5.5.x, 6.0.x,
 and 7.0.x up to version 7.0.62. Excelsior JET 11.3 adds support for Tomcat 8.0 and Tomcat 7.0.63+ versions.
-
+Excelsior JET 15 adds support for Tomcat 8.5 and 9.0.
 
 ## Configuration
 
@@ -220,10 +220,11 @@ as with plain Java SE applications.
 However, please note that a running Tomcat instance would not terminate until you run its standard `shutdown` script.
 Technically, you can terminate it using <key>Ctrl-C</key>, but that would terminate the entire <?php tool(); ?> build
 and would not constitute a correct Tomcat termination.
-So it is recommended to use the standard Tomcat `shutdown` script for correct Tomcat termination
-at the end of a Test Run. You may launch it from any standard Tomcat installation.
+So it is recommended to use either the standard Tomcat `shutdown` script or <?php maven_gradle('`jet:stop` Mojo', '`jetStop` task'); ?> 
+for correct Tomcat termination at the end of a Test Run.
 
 ## Profiling
 
 Profiling Tomcat Web applications is supported via the <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
-However, the same notice as for the Test Run applies: use the standard Tomcat `shutdown` script to ensure correct termination.
+However, the same notice as for the Test Run applies: use the standard Tomcat `shutdown` script or <?php maven_gradle('`jet:stop` Mojo', '`jetStop` task'); ?> 
+to ensure correct termination.

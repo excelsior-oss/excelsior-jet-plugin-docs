@@ -48,7 +48,7 @@
         print 'ERROR: Expected one command-line argument: "maven" or "gradle"';
         exit (1);
     }
-    function version() {echo '1.2.0';}
+    function version() {echo '1.3.0';}
     if ($argv[1] == 'maven') {
         define('MAVEN', TRUE);
         define('GRADLE', FALSE);
@@ -123,6 +123,8 @@ The current version of the plugin supports four types of applications:
     `java [-cp` _dependencies-list_ `] `_main-class_
     and (b) load classes mostly from the listed jars,
 
+*  _Spring Boot applications_, packaged into Spring Boot executable jar or war
+
 *   [Tomcat Web applications](https://www.excelsiorjet.com/solutions/protect-java-web-applications)
     — `.war` files that can be deployed to the Apache Tomcat application server,
 
@@ -167,6 +169,7 @@ and apply the `excelsiorJet` plugin:
 then proceed depending on the type of your application:
 
   * [Plain Java SE Application](#plain-java-se-application)
+  * [Spring Boot Application](#spring-boot-application)
   * [Tomcat Web Application](#tomcat-web-application)
   * [Invocation Library](#invocation-library)
   * [Windows Service](#windows-service)
@@ -207,6 +210,40 @@ then proceed depending on the type of your application:
 <?php endif; ?>
 
 5.  [Build the project](#building)
+
+#### Spring Boot Application
+
+<?php if (MAVEN) : ?> 
+1.  Add the following to the <?php section('configuration'); ?> section:
+
+        <configuration>
+            <appType>spring-boot</appType>
+        </configuration>
+<?php elseif (GRADLE) : ?> 
+1.  Configure the <?php section('excelsiorJet'); ?> section as follows:
+
+        excelsiorJet {
+            appType = "spring-boot"
+        }
+<?php endif; ?>
+
+2.  Optionally, conduct a Test Run:
+
+<?php if (MAVEN) : ?>
+        mvn jet:testrun
+<?php elseif (GRADLE) : ?>
+        gradlew jetTestRun
+<?php endif; ?>
+
+3.  Optionally, collect an execution profile (not available for 32-bit Intel x86 targets yet):
+
+<?php if (MAVEN) : ?>
+        mvn jet:profile
+<?php elseif (GRADLE) : ?>
+        gradlew jetProfile
+<?php endif; ?>
+
+4.  [Build the project](#building)
 
 #### Tomcat Web Application
 
@@ -458,6 +495,18 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 
 ## Release Notes
+
+Version 1.3.0 (??-Oct-2018)
+
+  * Support for Spring Boot applications introduced in Excelsior JET 15.3 via <?php param_value('appType', 'spring-boot'); ?> plugin configuration
+  * **Stop** task introduced for stopping applications that were run via Test Run, Run, Profile plugin tasks:
+
+    <?php if (MAVEN) : ?>
+        mvn jet:stop
+    <?php elseif (GRADLE) : ?>
+        gradlew jetStop
+    <?php endif; ?>
+
 
 Version 1.2.0 (08-May-2018)
 
