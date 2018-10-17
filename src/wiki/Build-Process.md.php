@@ -179,6 +179,9 @@ That section may contain parameters described below.
   * <?php param('outputDir'); ?> and <?php param('outputName'); ?> parameters control the placement of gathered profiles
     for both Test Run and Profile tasks.
 
+  * <?php param('testRunTimeout'); ?> and <?php param('profileRunTimeout'); ?> parameters set the timeout in seconds 
+    for the Test Run and Profile tasks respectively. The parameters are useful for automating those tasks.
+
 ## Compilation
 
 The native build is performed in the `jet` subdirectory

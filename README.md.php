@@ -507,6 +507,9 @@ Version 1.3.0 (??-Oct-2018)
         gradlew jetStop
     <?php endif; ?>
 
+  * <?php param('testRunTimeout'); ?>, <?php param('profileRunTimeout'); ?> parameters were added to 
+    <?php section('execProfiles'); ?> configuration section to allow automating Test Run and Profile Run tasks for applications 
+    that do not terminate by themselves.
 
 Version 1.2.0 (08-May-2018)
 
