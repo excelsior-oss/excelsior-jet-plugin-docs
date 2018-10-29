@@ -1,12 +1,12 @@
 The plugin enables you to compile Spring Boot applications down
-to a native binary using Excelsior JET. Compared to running your
+to native binaries using Excelsior JET. Compared to running your
 application on a conventional JVM, this has the following benefits:
 
 * More predictable latency for your Web application, as no code de-optimizations
   may occur suddenly at run time
 
 * Better startup time, which may be important if you need to launch a multitude of microservices
-  upon updating your distributed application.
+  upon updating your distributed application
 
 * Better initial performance that remains stable later on, which can be important
   for load balancing inside an application cluster
@@ -24,7 +24,7 @@ application on a conventional JVM, this has the following benefits:
 
 ## Supported Spring Boot Versions
 
-Excelsior JET 15.3 supports Spring Boot versions starting with 1.4.
+Excelsior JET 15.3 supports Spring Boot versions from 1.4 and above.
 
 ## Configuration
 
@@ -69,18 +69,18 @@ excelsiorJet {
 
 ## Test Run
 
-You can launch your Spring Boot application on Excelsior JET JVM using a JIT compiler
+You can launch your Spring Boot application on the Excelsior JET JVM using a JIT compiler
 before pre-compiling it to native code using the
 <?php maven_gradle('`jet:testrun` Mojo', '`jetTestRun` task'); ?> the same way
 as with plain Java SE applications.
 
-Use <?php maven_gradle('`jet:stop` Mojo', '`jetStop` task'); ?> 
-for correct application termination at the end of a Test Run. 
+Use the <?php maven_gradle('`jet:stop` Mojo', '`jetStop` task'); ?> 
+to ensure correct application termination at the end of a Test Run. 
 Technically, you can terminate the application using <key>Ctrl-C</key>, but that would terminate the entire <?php tool(); ?> build
 and would not constitute a correct termination.
 
 ## Profiling
 
 Profiling Spring Boot applications is supported via the <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
-However, the same notice as for the Test Run applies: use <?php maven_gradle('`jet:stop` Mojo', '`jetStop` task'); ?> 
+However, the same notice as for the Test Run applies: use the <?php maven_gradle('`jet:stop` Mojo', '`jetStop` task'); ?> 
 to ensure correct termination.

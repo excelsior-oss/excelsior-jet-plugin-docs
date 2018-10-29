@@ -117,13 +117,13 @@ be applied beforehand: `apply plugin: 'java'`
 
 The current version of the plugin supports four types of applications:
 
-*   _Plain Java SE applications_, defined as applications that (a) can be run 
+*   **Plain Java SE applications**, defined as applications that (a) can be run
     with all dependencies explicitly listed on the command-line 
     of the conventional `java` launcher: 
     `java [-cp` _dependencies-list_ `] `_main-class_
     and (b) load classes mostly from the listed jars,
 
-*  _Spring Boot applications_, packaged into Spring Boot executable jar or war
+*   **Spring Boot applications**, packaged into Spring Boot executable jar or war files (since Excelsior JET 15.3),
 
 *   [Tomcat Web applications](https://www.excelsiorjet.com/solutions/protect-java-web-applications)
     — `.war` files that can be deployed to the Apache Tomcat application server,
@@ -213,13 +213,13 @@ then proceed depending on the type of your application:
 
 #### Spring Boot Application
 
-<?php if (MAVEN) : ?> 
+<?php if (MAVEN) : ?>
 1.  Add the following to the <?php section('configuration'); ?> section:
 
         <configuration>
             <appType>spring-boot</appType>
         </configuration>
-<?php elseif (GRADLE) : ?> 
+<?php elseif (GRADLE) : ?>
 1.  Configure the <?php section('excelsiorJet'); ?> section as follows:
 
         excelsiorJet {
@@ -507,8 +507,8 @@ Version 1.3.0 (??-Oct-2018)
         gradlew jetStop
     <?php endif; ?>
 
-  * <?php param('testRunTimeout'); ?>, <?php param('profileRunTimeout'); ?> parameters were added to 
-    <?php section('execProfiles'); ?> configuration section to allow automating Test Run and Profile Run tasks for applications 
+  * <?php param('testRunTimeout'); ?>, <?php param('profileRunTimeout'); ?> parameters were added to
+    <?php section('execProfiles'); ?> configuration section to allow automating Test Run and Profile Run tasks for applications
     that do not terminate by themselves.
 
 Version 1.2.0 (08-May-2018)

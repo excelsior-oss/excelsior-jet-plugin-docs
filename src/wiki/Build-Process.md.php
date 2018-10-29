@@ -5,8 +5,9 @@ The Excelsior JET build process has four stages:
   * [Compilation](#compilation)
   * [Packaging](#packaging)
 
-There is also a task for [running](#running) the natively compiled application after the build and a task for [stopping](#stopping) the application
-that was previously run via Test Run, Profile, Run plugin tasks.
+There is also a task for [running](#running) the natively compiled application after the build,
+and a task for [stopping](#stopping) the application
+that was previously launched via either the Test Run, Profile, or Run plugin task.
 
 ## Test Run
 
@@ -179,7 +180,7 @@ That section may contain parameters described below.
   * <?php param('outputDir'); ?> and <?php param('outputName'); ?> parameters control the placement of gathered profiles
     for both Test Run and Profile tasks.
 
-  * <?php param('testRunTimeout'); ?> and <?php param('profileRunTimeout'); ?> parameters set the timeout in seconds 
+  * <?php param('testRunTimeout'); ?> and <?php param('profileRunTimeout'); ?> parameters set the timeout in seconds
     for the Test Run and Profile tasks respectively. The parameters are useful for automating those tasks.
 
 ## Compilation
@@ -225,7 +226,7 @@ See also:
 After a sucessfull build of the application you may want to run it using the plugin to verify
 that it works as expected.
 
-To run a plain Java SE application, a Spring Boot application or a Tomcat Web application, execute the following <?php tool(); ?> command:
+To run a plain Java SE application, a Spring Boot application, or a Tomcat Web application, execute the following <?php tool(); ?> command:
 
 <?php if (MAVEN) : ?>
     mvn jet:run
@@ -237,12 +238,11 @@ The Run task uses the `runArgs` and `multiAppRunArgs` plugin parameters describe
 
 ## Stopping
 
-If you develop a desktop GUI application then it is usually obvious how to stop it from the application itself.
-However some console applications do not have obvious way to terminate if you run them from the plugin. 
-The examples of such applications are Spring Boot and Tomcat Web applications.
-Technically, you can terminate them using <key>Ctrl-C</key>, but that would terminate the entire <?php tool(); ?> build
-and would not constitute a correct termination.
-So to terminate such applications that were run by Test Run, Profile, Run plugin tasks, execute the following <?php tool(); ?> command:
+Closing a desktop GUI application is usually straightforward, but there is no obvious way
+to terminate many console and server applications from the plugin.
+Two common examples are Spring Boot and Tomcat Web applications. Technically, you can terminate them by pressing <key>Ctrl-C</key>,
+but that would terminate the entire <?php tool(); ?> build and would not constitute a correct termination.
+To terminate such an application started by the Test Run, Profile or Run plugin task, execute the following <?php tool(); ?> command:
 
 <?php if (MAVEN) : ?>
     mvn jet:stop
@@ -250,16 +250,16 @@ So to terminate such applications that were run by Test Run, Profile, Run plugin
     gradlew jetStop
 <?php endif; ?>
 
-By default, the command sends <key>Ctrl-C</key> event to the application to terminate. 
-If your application does not terminate by <key>Ctrl-C</key> by any reason 
-you may change the default termination policy to a behavior that is equivalent to calling `System.exit()` within the application 
-by specifying the following configuration:
+By default, the command sends the <key>Ctrl-C</key> event to the application to terminate it.
+If your application does not terminate by <key>Ctrl-C</key> by any reason
+you may change the default termination policy to a behavior that is equivalent to calling `System.exit()`
+from within the application by specifying the following configuration:
 
 <?php param_value('terminationPolicy', 'halt'); ?> 
 
-The plugin uses temporary directory to notify a running application to stop. 
-By default it is <?php target_dir('jet/termination'); ?>. 
-If you need to run and stop multiple instances of the application simulteneously you may override the temporary directory name
-for a particular run/stop pair using `-Djet.run.temp.dir=` system property to avoid possible conflicts.
+The plugin uses files in a temporary directory to notify a running application to stop.
+By default it is <?php target_dir('jet/termination'); ?>.
+If you need to run and stop multiple instances of the application simultaneously you may override the temporary directory name
+for a particular run/stop pair using the `-Djet.run.temp.dir=` system property to avoid possible conflicts.
 
-Please also note that the stop task does not work for applications that were run manually, without the plugin.
+Please also note that the Stop task does not work for applications that were run manually, without the plugin.
