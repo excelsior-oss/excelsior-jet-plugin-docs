@@ -74,7 +74,8 @@ to a *clean* Tomcat installation, a copy of which will be used
 for the deployment of your Web application at build time.
 See the [Tomcat Web Applications](Tomcat-Web-Applications) section for more details.
 
-An [Invocation Dynamic Library](Invocation-Dynamic-Libraries) does not need a main class either,
+A [Spring Boot Application](Spring-Boot-Applications) and
+an [Invocation Dynamic Library](Invocation-Dynamic-Libraries) do not need a main class either,
 and the main class of a [Windows Service](Windows-Services) application must extend a special class `com.excelsior.service.WinService`
 of the [Excelsior JET WinService API](https://github.com/excelsior-oss/excelsior-jet-winservice-api).
 

@@ -28,6 +28,7 @@
 
 **Application Type Specifics:**
 
+  * [Spring Boot Applications](<?php github('wiki/Spring-Boot-Applications'); ?>)
   * [Tomcat Web Applications](<?php github('wiki/Tomcat-Web-Applications'); ?>)
   * [Dynamic Libraries](<?php github('wiki/Invocation-Dynamic-Libraries'); ?>)
   * [Windows Services](<?php github('wiki/Windows-Services'); ?>)

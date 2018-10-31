@@ -1,5 +1,5 @@
 The plugin enables you to compile Apache Tomcat together with your Web applications down
-to a native binary using Excelsior JET. Compared to running your
+to native binaries using Excelsior JET. Compared to running your
 application on a conventional JVM, this has the following benefits:
 
 * More predictable latency for your Web application, as no code de-optimizations
@@ -29,7 +29,7 @@ application on a conventional JVM, this has the following benefits:
 
 Excelsior JET 11 supports Apache Tomcat 5.0.x (starting from version 5.0.1), 5.5.x, 6.0.x,
 and 7.0.x up to version 7.0.62. Excelsior JET 11.3 adds support for Tomcat 8.0 and Tomcat 7.0.63+ versions.
-
+Excelsior JET 15 adds support for Tomcat 8.5 and 9.0.
 
 ## Configuration
 
@@ -212,7 +212,7 @@ automatically.
 
 ## Test Run
 
-You can launch your Tomcat Web application on Excelsior JET JVM using a JIT compiler
+You can run your Tomcat Web application on the Excelsior JET JVM using a JIT compiler
 before pre-compiling it to native code using the
 <?php maven_gradle('`jet:testrun` Mojo', '`jetTestRun` task'); ?> the same way
 as with plain Java SE applications.
@@ -220,10 +220,11 @@ as with plain Java SE applications.
 However, please note that a running Tomcat instance would not terminate until you run its standard `shutdown` script.
 Technically, you can terminate it using <key>Ctrl-C</key>, but that would terminate the entire <?php tool(); ?> build
 and would not constitute a correct Tomcat termination.
-So it is recommended to use the standard Tomcat `shutdown` script for correct Tomcat termination
-at the end of a Test Run. You may launch it from any standard Tomcat installation.
+So it is recommended to use either the standard Tomcat `shutdown` script or the <?php maven_gradle('`jet:stop` Mojo', '`jetStop` task'); ?> 
+to ensure correct Tomcat termination at the end of a Test Run.
 
 ## Profiling
 
 Profiling Tomcat Web applications is supported via the <?php maven_gradle('`jet:profile` Mojo', '`jetProfile` task'); ?>.
-However, the same notice as for the Test Run applies: use the standard Tomcat `shutdown` script to ensure correct termination.
+However, the same notice as for the Test Run applies: use the standard Tomcat `shutdown` script or the <?php maven_gradle('`jet:stop` Mojo', '`jetStop` task'); ?> 
+to ensure correct termination.
