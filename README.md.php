@@ -496,7 +496,7 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 ## Release Notes
 
-Version 1.3.0 (??-Oct-2018)
+Version 1.3.0 (31-Oct-2018)
 
   * Support for Spring Boot applications introduced in Excelsior JET 15.3 via <?php param_value('appType', 'spring-boot'); ?> plugin configuration
   * **Stop** task introduced for stopping applications that were run via Test Run, Run, Profile plugin tasks:
