@@ -48,7 +48,7 @@
         print 'ERROR: Expected one command-line argument: "maven" or "gradle"';
         exit (1);
     }
-    function version() {echo '1.3.0';}
+    function version() {echo '1.3.1';}
     if ($argv[1] == 'maven') {
         define('MAVEN', TRUE);
         define('GRADLE', FALSE);
@@ -495,6 +495,11 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 
 ## Release Notes
+
+Version 1.3.1 (26-Dec-2018)
+
+* `tar-gz` [packaging](<?php github('wiki/Build-Process#packaging'); ?>) type added for creation `tar.gz` archive 
+   as the resulting output artifact (#79 Maven plugin issue).
 
 Version 1.3.0 (31-Oct-2018)
 

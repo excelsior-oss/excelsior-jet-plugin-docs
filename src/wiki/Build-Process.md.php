@@ -209,7 +209,9 @@ Packaging occurs automatically upon successful compilation.
 By default, the plugin packs the contents of the 
 <?php target_dir('jet/app'); ?> directory into a zip archive named 
 `<?php maven_gradle('${project.build.finalName}', '<artifactName>'); ?>.zip`
-so as to aid single file re-distribution.
+so as to aid single file re-distribution. 
+To create `tar.gz` archive instead of `zip` use the <?php param_string('packaging', 'tar-gz'); ?> 
+configuration parameter.
 
 On Windows and Linux, you can also set the <?php param_string('packaging', 'excelsior-installer'); ?> 
 configuration parameter to have the plugin create an Excelsior Installer setup instead,
