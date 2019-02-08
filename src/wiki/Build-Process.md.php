@@ -269,13 +269,13 @@ Please also note that the Stop task does not work for applications that were run
 <?php if (MAVEN) : ?>
 ## Goals Integation into Maven `pom.xml`
 
-The above `jet:build`, `jet:testrun`, `jet:profile` plugin goals execute Maven's `package` goal automatically 
-allowing you to not specify it excplicitly on the command line. 
-However, if you would like to configure the plugin executing it on a paricular Maven phase (such as `packaging` phase) 
-using the above goals would result in double Maven lifecycle execution. 
-Thus the plugin has three additional goals `jet-build`, `jet-testrun`, `jet-profile` for using them inside `<goal>` Maven declarations
-(the goals do not fork Maven lifecycle).
-For example with the following plugin configuration:
+The above `jet:build`, `jet:testrun`, `jet:profile` plugin goals execute the Maven `package` goal automatically,
+enabling you to not specify it explicitly on the command line. 
+However, should you need to configure the plugin to execute one of those goals on a paricular Maven phase,
+such as `packaging`, using the above goals would result in a repeated execution of the entire Maven lifecycle. 
+Therefore the plugin provides three additional goals, `jet-build`, `jet-testrun`, and `jet-profile`,
+for use inside `<goal>` Maven declarations. These goals do not fork the Maven lifecycle.
+For example, with the following plugin configuration:
 
 ```xml
 <plugin>
@@ -297,7 +297,7 @@ For example with the following plugin configuration:
 </plugin>
 ```
 
-you can trigger the Excelsior JET build with a regular Maven command such as:
+you can trigger an Excelsior JET build with a regular Maven command such as:
 
 ```
 mvn package

@@ -499,8 +499,8 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 <?php if (MAVEN) : ?>
 Version 1.3.2 (31-Jan-2019)
 
-`jet-build`, `jet-testrun`, `jet-profile` goals introduced that do not fork Maven lifecylce 
- and thus can be used within `<goal>` Maven declarations (issue #82).
+`jet-build`, `jet-testrun`, `jet-profile` goals introduced that do not fork the Maven lifecycle 
+and thus can be used within `<goal>` Maven declarations (issue #82).
 <?php endif; ?>
 
 Version 1.3.1 (26-Dec-2018)
