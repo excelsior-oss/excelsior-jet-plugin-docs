@@ -265,3 +265,43 @@ If you need to run and stop multiple instances of the application simultaneously
 for a particular run/stop pair using the `-Djet.run.temp.dir=` system property to avoid possible conflicts.
 
 Please also note that the Stop task does not work for applications that were run manually, without the plugin.
+
+<?php if (MAVEN) : ?>
+## Goals Integation into Maven `pom.xml`
+
+The above `jet:build`, `jet:testrun`, `jet:profile` plugin goals execute the Maven `package` goal automatically,
+enabling you to not specify it explicitly on the command line. 
+However, should you need to configure the plugin to execute one of those goals on a paricular Maven phase,
+such as `packaging`, using the above goals would result in a repeated execution of the entire Maven lifecycle. 
+Therefore the plugin provides three additional goals, `jet-build`, `jet-testrun`, and `jet-profile`,
+for use inside `<goal>` Maven declarations. These goals do not fork the Maven lifecycle.
+For example, with the following plugin configuration:
+
+```xml
+<plugin>
+	<groupId>com.excelsiorjet</groupId>
+	<artifactId>excelsior-jet-maven-plugin</artifactId>
+	<version><?php version(); ?></version>
+	<configuration>
+		<mainClass></mainClass>
+	</configuration>
+	<executions>
+		<execution>
+			<id>build</id>
+			<goals>
+				<goal>jet-build</goal>
+			</goals>
+			<phase>package</phase>
+		</execution>
+	</executions>
+</plugin>
+```
+
+you can trigger an Excelsior JET build with a regular Maven command such as:
+
+```
+mvn package
+```
+
+<?php endif; ?>
+

@@ -48,7 +48,7 @@
         print 'ERROR: Expected one command-line argument: "maven" or "gradle"';
         exit (1);
     }
-    function version() {echo '1.3.1';}
+    function version() {echo '1.3.2';}
     if ($argv[1] == 'maven') {
         define('MAVEN', TRUE);
         define('GRADLE', FALSE);
@@ -495,6 +495,13 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 
 ## Release Notes
+
+<?php if (MAVEN) : ?>
+Version 1.3.2 (31-Jan-2019)
+
+`jet-build`, `jet-testrun`, `jet-profile` goals introduced that do not fork the Maven lifecycle 
+and thus can be used within `<goal>` Maven declarations (issue #82).
+<?php endif; ?>
 
 Version 1.3.1 (26-Dec-2018)
 

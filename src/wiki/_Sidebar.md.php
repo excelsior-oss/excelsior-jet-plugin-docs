@@ -8,6 +8,9 @@
       - [Compilation](<?php github('wiki/Build-Process#compilation'); ?>)
       - [Packaging](<?php github('wiki/Build-Process#packaging'); ?>)
       - [Running](<?php github('wiki/Build-Process#running'); ?>)
+<?php if (MAVEN) : ?>
+      - [Goals Integation into Maven `pom.xml`](<?php github('wiki/Build-Process#goals-integation-into-maven-pom-xml'); ?>)
+<?php endif; ?>
 
 **Compilation Settings:**
 
