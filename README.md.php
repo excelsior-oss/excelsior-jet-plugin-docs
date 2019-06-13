@@ -496,6 +496,10 @@ or follow [@ExcelsiorJET](https://twitter.com/ExcelsiorJET) on Twitter.
 
 ## Release Notes
 
+Version 1.3.3 (13-Jun-2019)
+
+* macOS application bundles creation updated to support Notarization.
+
 <?php if (MAVEN) : ?>
 Version 1.3.2 (31-Jan-2019)
 
